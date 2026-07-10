@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+vectorstore/chroma_db/*
+data/raw/*
+data/processed/*
