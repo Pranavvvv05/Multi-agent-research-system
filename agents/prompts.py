@@ -39,7 +39,7 @@ Output Format:
 
 Return ONLY valid JSON.
 
-{
+{{
   "goal": "Research objective",
   "tasks": [
     "Task 1",
@@ -51,7 +51,7 @@ Return ONLY valid JSON.
     "Category 2",
     "Category 3"
   ]
-}
+}}
 
 Rules:
 - Output ONLY JSON.
@@ -125,7 +125,7 @@ Output Rules:
 
 Output Format:
 
-{
+{{
   "research_results": [
     {
       "task": "Research Task Name",
@@ -144,7 +144,7 @@ Output Format:
       "conflicting_information": []
     }
   ]
-}
+}}
 """
     ),
     (
@@ -247,31 +247,44 @@ Output Rules:
 
 Output Format:
 
-{
+{{
   "verified_results": [
-    {
+    {{
       "task": "Research Task Name",
+
+      "verified_sources": [
+        {{
+          "source": "https://example.com",
+          "source_quality": "high"
+        }}
+      ],
+
       "verified_findings": [
-        {
+        {{
           "claim": "Finding text",
           "verification_status": "verified",
           "confidence_score": 0.95,
           "source_quality": "high",
           "evidence_available": true,
           "hallucination_risk": false,
+          "supporting_sources": [
+            "https://example.com"
+          ],
           "notes": "Supported by multiple reliable sources."
-        }
+        }}
       ],
-      "conflicting_information": [],
+
+      "conflicting_information": [
+        {{
+          "claim": "Conflicting claim text",
+          "reason": "Different sources provide inconsistent information."
+        }}
+      ],
+
       "overall_task_confidence": 0.92
-    }
+    }}
   ]
-}
-"""
-    ),
-    (
-        "human",
-        """
+}}
 Research Results:
 
 {research_results}
@@ -345,9 +358,9 @@ Output Rules:
 
 Output Format:
 
-{
+{{
   "analysis_results": [
-    {
+    {{
       "task": "Research Task Name",
       "key_insights": [
         "Insight 1",
@@ -376,14 +389,14 @@ Output Format:
         "Observation 1",
         "Observation 2"
       ]
-    }
+    }}
   ],
   "overall_summary": [
     "Summary Point 1",
     "Summary Point 2"
   ],
   "overall_confidence": 0.90
-}
+}}
 """
     ),
     (
