@@ -5,3 +5,5 @@ __pycache__/
 vectorstore/chroma_db/*
 data/raw/*
 data/processed/*
+chroma-db/
+vectorstore/chroma.db/
