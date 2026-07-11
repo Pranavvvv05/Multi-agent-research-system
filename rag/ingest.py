@@ -39,4 +39,4 @@ splitter = RecursiveCharacterTextSplitter(
 )
 
 chunks=splitter.split_documents(docs)
-print(f"\nTotal chunks after splitting: {len(chunks)}")
+print(f"\nTotal chunks after splitting: {len(chunks)}") 
