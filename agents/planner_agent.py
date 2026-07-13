@@ -14,6 +14,7 @@ class PlannerAgent:
         """
         Generate a structured research plan from the user query.
         """
+        response = None
         try:
             response = self.chain.invoke(
                 {
