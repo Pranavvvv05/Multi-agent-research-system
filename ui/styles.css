@@ -1,0 +1,876 @@
+/* =============================================================
+   InsightForge — Design Tokens
+   Signature: agents are rendered as a "signal chain" — a research
+   instrument reading, not a checklist. Verification/trust is the
+   thing this project does that the reference project doesn't, so
+   it gets its own visual language (trust bars, confidence dots)
+   rather than being one more panel among many.
+
+   Palette note: purple/pink (--primary-a/--primary-b) is BRAND
+   identity — title, buttons, active nav, logo mark. Green (--signal)
+   is reserved for SUCCESS/VERIFIED/COMPLETED status only, so the two
+   meanings never collide visually.
+   ============================================================= */
+
+:root {
+    --bg: #120d20;
+    --bg-raised: #1c1530;
+    --surface: #1e1733;
+    --surface-2: #291f42;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+
+    --text: #f3f0fa;
+    --text-dim: #b4a9c9;
+    --text-faint: #7d7396;
+
+    --signal: #34d399;       /* green — verified / completed / online */
+    --signal-dim: rgba(52, 211, 153, 0.14);
+    --insight: #a78bfa;      /* violet — analysis / reasoning */
+    --insight-dim: rgba(167, 139, 250, 0.14);
+    
+    /* 👇 GOLDEN/COPPER TOUCH VARIABLES 👇 */
+    --gold-accent: #e8b059;   /* New: Halka copper/gold touch dene ke liye */
+    --gold-dim: rgba(232, 176, 89, 0.10);
+    --review: #cc8421;       /* Amber/Bronze mix jo review cards ko golden touch dega */
+    --review-dim: rgba(204, 132, 33, 0.14);
+    
+    --alert: #f87171;        /* red — conflicts / low trust */
+    --alert-dim: rgba(248, 113, 113, 0.14);
+
+    --primary-a: #a78bfa;    /* Purple end (Brand) */
+    --primary-b: #7c3aed;    /* Deep Violet (Brand) */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--text);
+}
+
+/* ── Main App Background ────────────────────────────────── */
+/* ── Main App Background (Fixed Visibility) ────────────────────────────────── */
+/* ── Main App Background (Stronger Golden Blend) ────────────────────────── */
+/* ── Main App Background (Dual Golden Glow) ────────────────────────── */
+.stApp {
+    background-color: #120d20;
+    background-image: 
+        /* Top-Left ka Golden Glow */
+        radial-gradient(circle 700px at 5% 5%, rgba(232, 176, 89, 0.22) 0%, transparent 60%),
+        /* Bottom-Right ka Golden Glow */
+        radial-gradient(circle 800px at 90% 85%, rgba(204, 132, 33, 0.25) 0%, transparent 65%),
+        /* Dark overlay */
+        linear-gradient(rgba(18, 13, 32, 0.65), rgba(18, 13, 32, 0.85)),
+        /* Network Image */
+        url('https://i.postimg.cc/25TnQhLZ/bg-img.png'); 
+        
+    background-size: cover; 
+    background-position: center top; 
+    background-attachment: fixed; 
+    background-repeat: no-repeat;
+}
+
+/* Optional: Agar tumhare main app container ko thoda dark transparent background dena ho taaki text aur pop ho */
+.block-container {
+    background: rgba(18, 13, 32, 0.4); /* Halka sa glass effect main content ke piche */
+    border-radius: 16px;
+    margin-top: 1rem;
+}
+
+#MainMenu, footer, header { visibility: hidden; }
+.block-container { padding: 1.6rem 2.4rem 4rem; max-width: 1180px; }
+
+/* ── Header ─────────────────────────────────────────────── */
+.if-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--insight);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+}
+.if-eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--insight);
+    box-shadow: 0 0 8px var(--insight);
+}
+.if-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 3.6vw, 2.9rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+}
+.if-title .accent {
+    background: linear-gradient(135deg, var(--primary-a), var(--primary-b));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.if-sub {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    max-width: 620px;
+    line-height: 1.6;
+    font-weight: 400;
+}
+.if-rule {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-strong), transparent 70%);
+    margin: 1.6rem 0 1.4rem;
+}
+
+/* ── Config / input card ────────────────────────────────── */
+.if-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.if-card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.8rem;
+}
+
+.stTextInput > div > div > input, .stTextArea textarea {
+    background: var(--bg-raised) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+    font-family: 'IBM Plex Sans', sans-serif !important;
+}
+.stTextInput > div > div > input:focus {
+    border-color: var(--insight) !important;
+    box-shadow: 0 0 0 3px var(--insight-dim) !important;
+}
+.stTextInput > label, .stSelectbox > label, .stCheckbox > label {
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 0.66rem !important;
+    letter-spacing: 0.13em !important;
+    text-transform: uppercase !important;
+    color: var(--text-faint) !important;
+}
+
+.stButton > button {
+    background: linear-gradient(135deg, var(--primary-a), var(--primary-b)) !important;
+    color: #ffffff !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.65rem 1.4rem !important;
+    width: 100%;
+    transition: transform 0.12s, box-shadow 0.12s !important;
+    box-shadow: 0 4px 18px rgba(139,92,246,0.28);
+}
+.stButton > button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 26px rgba(139,92,246,0.42) !important;
+}
+
+.stCheckbox {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem 0.5rem 0.4rem;
+}
+
+/* ── Signal chain (pipeline) ────────────────────────────── */
+.if-chain-wrap { padding: 0.4rem 0 0.2rem; }
+.if-chain {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+}
+.if-node {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 0.4rem;
+    position: relative;
+}
+.if-node-dot {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    background: var(--surface-2);
+    border: 1.5px solid var(--border-strong);
+    color: var(--text-faint);
+    z-index: 2;
+    transition: all 0.25s;
+    margin-bottom: 0.55rem;
+}
+.if-node.running .if-node-dot {
+    border-color: var(--insight);
+    color: var(--insight);
+    box-shadow: 0 0 0 4px var(--insight-dim);
+    animation: if-pulse 1.4s ease-in-out infinite;
+}
+.if-node.done .if-node-dot {
+    background: var(--signal-dim);
+    border-color: var(--signal);
+    color: var(--signal);
+}
+@keyframes if-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px var(--insight-dim); }
+    50% { box-shadow: 0 0 0 8px transparent; }
+}
+.if-node-line {
+    position: absolute;
+    top: 15px; left: -50%; width: 100%; height: 1.5px;
+    background: var(--border-strong);
+    z-index: 1;
+}
+.if-node.done .if-node-line { background: var(--signal); opacity: 0.5; }
+.if-node:first-child .if-node-line { display: none; }
+.if-node-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+}
+.if-node-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-top: 0.15rem;
+}
+.if-node.running .if-node-status { color: var(--insight); }
+.if-node.done .if-node-status { color: var(--text-dim); }
+
+/* ── Metric strip ───────────────────────────────────────── */
+.if-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.2rem 0;
+}
+.if-metric {
+    background: var(--surface);
+    padding: 1rem 1.2rem;
+}
+.if-metric-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.35rem;
+}
+.if-metric-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+}
+.if-metric-value.good { color: var(--signal); }
+.if-metric-value.warn { color: var(--review); }
+.if-metric-value.bad { color: var(--alert); }
+.if-metric-target {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text-faint);
+    margin-top: 0.15rem;
+}
+
+/* ── Panels ──────────────────────────────────────────────── */
+.if-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.7rem;
+    margin-bottom: 1.1rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.if-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.if-panel-head .accent-signal { color: var(--signal); }
+.if-panel-head .accent-insight { color: var(--insight); }
+.if-panel-head .accent-review { color: var(--review); }
+
+/* ── Source / verification cards ────────────────────────── */
+.if-source {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+}
+.if-source:last-child { border-bottom: none; }
+.if-source-body { flex: 1; min-width: 0; }
+.if-source-title {
+    font-size: 0.86rem; font-weight: 500; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.if-source-url {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem; color: var(--text-faint);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.if-trust-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    padding: 0.18rem 0.55rem;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+.if-trust-tag.verified { background: var(--signal-dim); color: var(--signal); }
+.if-trust-tag.conflict { background: var(--alert-dim); color: var(--alert); }
+.if-trust-tag.unverified { background: rgba(255,255,255,0.06); color: var(--text-faint); }
+.if-trust-bar-track {
+    width: 60px; height: 4px; border-radius: 4px;
+    background: rgba(255,255,255,0.08); overflow: hidden; flex-shrink: 0;
+}
+.if-trust-bar-fill { height: 100%; border-radius: 4px; }
+
+.if-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-dim);
+    margin: 0 0.3rem 0.3rem 0;
+}
+.if-tag.rag { background: var(--insight-dim); color: var(--insight); }
+.if-tag.web { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+
+/* ── List rows (insights/trends/risks) ──────────────────── */
+.if-row {
+    display: flex; gap: 0.7rem;
+    font-size: 0.87rem; color: var(--text-dim);
+    line-height: 1.55; padding: 0.35rem 0;
+}
+.if-row-marker { color: var(--insight); flex-shrink: 0; font-family: 'IBM Plex Mono', monospace; }
+
+/* ── Score gauge (critic) ───────────────────────────────── */
+.if-score-wrap { display: flex; align-items: center; gap: 1.3rem; }
+.if-score-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.6rem; font-weight: 700; color: var(--review);
+    line-height: 1;
+}
+.if-score-den { font-size: 1rem; color: var(--text-faint); }
+
+/* ── Report ──────────────────────────────────────────────── */
+.if-report {
+    font-size: 0.92rem; line-height: 1.75; color: var(--text);
+}
+.if-report h1, .if-report h2, .if-report h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text);
+}
+
+/* Streamlit tabs restyle */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--border);
+}
+.stTabs [data-baseweb="tab"] {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    background: transparent;
+    padding: 0.6rem 0.9rem;
+}
+.stTabs [aria-selected="true"] {
+    color: var(--insight) !important;
+    border-bottom: 2px solid var(--insight) !important;
+}
+
+.stSpinner > div { color: var(--insight) !important; }
+details summary {
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 0.72rem !important;
+    color: var(--text-dim) !important;
+}
+
+/* ── Agent status list (Agent Monitor page) ─────────────── */
+.if-agent-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+}
+.if-agent-row:last-child { border-bottom: none; }
+.if-agent-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.92rem; }
+.if-agent-desc { font-size: 0.78rem; color: var(--text-faint); margin-top: 0.1rem; }
+.if-status-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-faint);
+}
+.if-status-pill.running {
+    background: var(--review-dim);
+    color: var(--review);
+    animation: if-pulse-gold 1.4s ease-in-out infinite;
+}
+@keyframes if-pulse-gold {
+    0%, 100% { box-shadow: 0 0 0 4px var(--review-dim); }
+    50% { box-shadow: 0 0 0 8px transparent; }
+}
+.if-status-pill.done { background: var(--signal-dim); color: var(--signal); }
+
+/* ── Progress bar ────────────────────────────────────────── */
+.if-progress-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    overflow: hidden;
+    margin: 0.2rem 0 1.4rem;
+}
+.if-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-a), var(--primary-b));
+    border-radius: 6px;
+    transition: width 0.4s ease;
+}
+
+/* ── Section labels (reused across analysis/report panels) ─ */
+.if-section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0.6rem 0 0.3rem;
+}
+
+/* ── Report body text (Executive Summary) ───────────────── */
+.if-report-text {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin: 0 0 0.9rem;
+}
+.if-report-text:last-child { margin-bottom: 0; }
+
+/* ── Concept chips (Important Concepts) ─────────────────── */
+.if-tag.concept {
+    background: var(--insight-dim);
+    color: var(--insight);
+    font-size: 0.72rem;
+    padding: 0.3rem 0.7rem;
+    margin: 0 0.4rem 0.4rem 0;
+}
+
+/* ── SWOT grid (Strengths & Weaknesses) ─────────────────── */
+.if-swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+}
+@media (max-width: 700px) {
+    .if-swot-grid { grid-template-columns: 1fr; }
+}
+
+.if-footer {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    text-align: center;
+    margin-top: 3rem;
+    letter-spacing: 0.06em;
+}
+
+/* ── Sidebar (branded nav) ──────────────────────────────── */
+[data-testid="stSidebarNav"] { display: none; }
+
+[data-testid="stSidebar"] {
+    /* Slightly transparent background */
+    background: rgba(30, 23, 51, 0.6) !important; 
+    /* The magic blur effect */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-right: 1px solid var(--border);
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 1.2rem;
+}
+
+.if-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0 0.2rem 1.2rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+/* ── Sidebar Brand Logo Box (Golden/Copper Update) ────────── */
+.if-sidebar-brand-mark {
+    width: 34px; 
+    height: 34px;
+    border-radius: 9px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; 
+    font-size: 0.85rem;
+    
+    /* 👇 Purple brand gradient ki jagah rich Golden/Copper gradient 👇 */
+    background: linear-gradient(135deg, #f3c77c, #cc8421) !important;
+    color: #120d20 !important; /* Text color ko dark kiya hai taaki gold par clear dikhe */
+    
+    /* Soft golden neon glow box ke charo taraf */
+    box-shadow: 0 0 14px rgba(232, 176, 89, 0.4) !important;
+}
+.if-sidebar-brand-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--text);
+}
+.if-sidebar-brand-name .accent {
+    background: linear-gradient(135deg, var(--primary-a), var(--primary-b));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ── Sidebar Box/Card Links ────────────────────────────── */
+[data-testid="stSidebar"] [data-testid="stPageLink"] {
+    /* Box Look (Matches your main cards) */
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.75rem; /* Space between boxes */
+    
+    /* Subtle depth */
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Hover Effect - Slight lift and glow */
+[data-testid="stSidebar"] [data-testid="stPageLink"]:hover {
+    background: var(--surface-2);
+    border-color: var(--insight);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(167, 139, 250, 0.12);
+}
+
+/* Text styling inside the box */
+[data-testid="stSidebar"] [data-testid="stPageLink"] p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin: 0;
+}
+
+/* Active Page Box - Highlighted state */
+/* ── Glowing Active Sidebar Box (Reference Style) ───────── */
+.if-sidebar-active [data-testid="stPageLink"] {
+    /* Halka copper transparent background blend */
+    background: linear-gradient(135deg, rgba(232, 176, 89, 0.12), rgba(204, 132, 33, 0.04)) !important; 
+    
+    /* Golden/Copper Border */
+    border: 1px solid rgba(232, 176, 89, 0.5) !important; 
+    border-left: 4px solid var(--gold-accent) !important; /* Left sharp accent line */
+    
+    /* 👇 MAIN GLOW EFFECT: Isse button ke piche aur charo taraf golden neon glow aayega 👇 */
+    box-shadow: 
+        0 4px 20px rgba(232, 176, 89, 0.18), 
+        inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        
+    transition: all 0.3s ease !important;
+}
+
+/* Active Text styling inside the glowing box */
+.if-sidebar-active [data-testid="stPageLink"] p {
+    color: #fce8c8 !important; /* Text ko ekdum bright creamy gold color diya hai */
+    font-weight: 700 !important;
+    /* Text par bhi halka sa glowing effect */
+    text-shadow: 0 0 8px rgba(232, 176, 89, 0.4) !important;
+}
+
+
+.if-sidebar-footer {
+    margin-top: 1.4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--text-faint);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+}
+
+/* ── Hero decorative network graphic (Home page only) ───── */
+.if-header-wrap {
+    position: relative;
+}
+.if-header-wrap > .if-header-content {
+    position: relative;
+    z-index: 1;
+}
+.if-hero-net {
+    position: absolute;
+    top: -1.5rem;
+    right: -1rem;
+    width: 380px;
+    max-width: 45vw;
+    height: auto;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+    filter: drop-shadow(0 0 6px rgba(167,139,250,0.35));
+}
+@media (max-width: 900px) {
+    .if-hero-net { display: none; }
+}
+
+/* ── Fix for Streamlit Alerts (No document warning) ──────── */
+[data-testid="stAlert"] {
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+}
+
+[data-testid="stAlert"] p {
+    color: var(--text) !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+}
+
+/* ── Main Page Buttons ("Go to Home") ────────────────────── */
+.block-container [data-testid="stPageLink"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: 8px !important;
+    padding: 0.8rem 1.4rem !important;
+    margin-top: 2rem !important; /* Ye button ko niche push karega */
+    display: inline-flex !important; /* Button ko text ke size ka rakhega */
+    width: max-content !important;
+    transition: all 0.2s ease !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+
+.block-container [data-testid="stPageLink"]:hover {
+    background: var(--surface-2) !important;
+    border-color: var(--insight) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.15) !important;
+}
+
+.block-container [data-testid="stPageLink"] p {
+    color: var(--text) !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    margin: 0 !important;
+}
+
+/* 1. Chota Eyebrow text Golden */
+.if-eyebrow {
+    color: #e8b059 !important; 
+}
+.if-eyebrow .dot {
+    background: #e8b059 !important;
+    box-shadow: 0 0 8px #e8b059 !important;
+}
+
+/* 2. InsightForge ka gradient */
+.if-sidebar-brand-name .accent, .if-title .accent {
+    background: linear-gradient(135deg, #f3c77c, #cc8421) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+/* 3. Main Analyze Button ka border aur shadow golden */
+.stButton > button {
+    background: linear-gradient(135deg, #a78bfa, #7c3aed) !important; /* Button purple rahega */
+    border: 1px solid #e8b059 !important; /* Golden border */
+    box-shadow: 0 4px 18px rgba(232, 176, 89, 0.3) !important; /* Golden glow */
+}
+
+/* 4. Active Sidebar Box - Pure Golden Touch */
+.if-sidebar-active [data-testid="stPageLink"] {
+    background: linear-gradient(135deg, rgba(232, 176, 89, 0.15), rgba(204, 132, 33, 0.05)) !important; 
+    border: 1px solid rgba(232, 176, 89, 0.6) !important; 
+    border-left: 4px solid #e8b059 !important; 
+    box-shadow: 0 4px 20px rgba(232, 176, 89, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+.if-sidebar-active [data-testid="stPageLink"] p {
+    color: #fce8c8 !important; /* Bright gold text */
+    font-weight: 700 !important;
+    text-shadow: 0 0 8px rgba(232, 176, 89, 0.5) !important;
+}
+
+
+/* ── ENTRY ANIMATIONS (Welcome Effect) ───────────────────────── */
+
+/* ── ENTRY ANIMATIONS (Streamlit Fix) ───────────────────────── */
+
+/* 1. Main Dashboard Fade-Up Animation */
+/* ── FIX FOR THE STUCK POP-UP (Transform Trap Removed) ── */
+/* ── 1. Main Dashboard Animation (TRAP REMOVED) ───────────────────────── */
+@keyframes fadeUpEntry {
+    0% { 
+        opacity: 0; 
+        top: 40px;  /* Transform hata diya, ab top use kar rahe hain */
+    }
+    100% { 
+        opacity: 1; 
+        top: 0px; 
+    }
+}
+
+.stApp .block-container {
+    position: relative !important; /* Ye top ko kaam karne dega */
+    -webkit-animation: fadeUpEntry 1s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
+    animation: fadeUpEntry 1s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
+}
+
+
+/* 2. Sidebar Slide-In Animation */
+@keyframes slideInLeft {
+    0% { 
+        opacity: 0; 
+        transform: translateX(-50px); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateX(0); 
+    }
+}
+
+/* Sidebar ke direct inner container ko target kiya */
+[data-testid="stSidebar"] > div {
+    -webkit-animation: slideInLeft 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
+    animation: slideInLeft 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
+}
+
+/* 3. Golden Logo Glow Pulse */
+@keyframes goldPulse {
+    0% { 
+        box-shadow: 0 0 0 rgba(232, 176, 89, 0); 
+        transform: scale(0.9);
+    }
+    60% { 
+        box-shadow: 0 0 30px rgba(232, 176, 89, 0.9); 
+        transform: scale(1.08);
+    }
+    100% { 
+        box-shadow: 0 0 14px rgba(232, 176, 89, 0.4); 
+        transform: scale(1);
+    }
+}
+
+.if-sidebar-brand-mark {
+    -webkit-animation: goldPulse 1.5s ease-out 0.2s both !important; /* 0.2s ka delay diya hai taaki load hone ke baad chale */
+    animation: goldPulse 1.5s ease-out 0.2s both !important;
+}
+
+/* ── WELCOME POP-UP ANIMATION ───────────────────────── */
+
+/* ── ENTRY ANIMATIONS (Bottom-Right Pop-up) ───────────────────────── */
+
+@keyframes premiumBottomRightPopIn {
+    0% {
+        opacity: 0;
+        /* Ab center transform nahi hoga, sirf Y-axis par bounce karega */
+        transform: translateY(40px) scale(0.95);
+    }
+    70% {
+        transform: translateY(-5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Custom Welcome Card Class (Bottom Right Notification Style) */
+.if-welcome-popup {
+    background: linear-gradient(135deg, var(--surface), var(--bg-raised)) !important;
+    border: 1px solid rgba(232, 176, 89, 0.4) !important; /* Golden border */
+    border-radius: 12px !important;
+    padding: 1.2rem 1.4rem !important;
+    
+    /* 👇 POSITION FIXED TO BOTTOM RIGHT 👇 */
+    /* 👇 IN EXACT LINES KO CHANGE KAREIN 👇 */
+    position: fixed !important;
+    bottom: 15px !important;  /* Isko 2.5rem se kam karke 15px (ya 0px) kar diya taaki ekdum bottom mein chala jaye */
+    right: 20px !important;   /* Right corner se thoda sa gap rakhne ke liye */
+    left: auto !important;
+    /* Pehle wala left setting hatane ke liye */
+    
+    /* 👇 WIDTH ADJUSTMENT 👇 */
+    width: auto !important;
+    max-width: 420px !important; /* Box ko zyada failne se rokega */
+    z-index: 99999 !important; 
+    
+    /* Shadow taaki wo baki elements ke upar clearly dikhe */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(232, 176, 89, 0.1) !important;
+    
+    /* Animation settings */
+    -webkit-animation: premiumBottomRightPopIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
+    animation: premiumBottomRightPopIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
+    animation-delay: 0.1s !important; 
+}
+
+/* Welcome Card Text Settings */
+.if-welcome-popup h2 {
+    color: var(--text) !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 1.2rem !important; 
+    margin: 0 0 0.3rem 0 !important;
+    /* 👇 Is command se heading hamesha ek line mein rahegi 👇 */
+    white-space: nowrap !important; 
+}
+
+.if-welcome-popup p {
+    color: var(--text-dim) !important;
+    font-size: 0.85rem !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+}
