@@ -127,7 +127,7 @@ Output Format:
 
 {{
   "research_results": [
-    {
+    {{
       "task": "Research Task Name",
       "findings": [
         "Finding 1",
@@ -142,7 +142,7 @@ Output Format:
         "https://source2.com"
       ],
       "conflicting_information": []
-    }
+    }}
   ]
 }}
 """
@@ -156,7 +156,7 @@ User Query:
 Research Goal:
 {goal}
 
-Research Tasks:
+Research Tasks and Search Results:
 {tasks}
 """
     )
