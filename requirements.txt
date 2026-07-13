@@ -30,3 +30,4 @@ plotly
 
 fastapi
 uvicorn
+reportlab
