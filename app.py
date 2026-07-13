@@ -35,11 +35,11 @@
 # """
 # InsightForge — Multi-Agent Research Intelligence Platform
 # Frontend entrypoint.
-
+#
 # INTEGRATION CONTRACT for whoever wires up graph/workflow.py:
-
+#
 #     from graph.workflow import run_pipeline
-
+#
 #     def run_pipeline(topic: str, use_rag: bool = True):
 #         '''Generator. Yields (step_key, payload) after each agent finishes,
 #         in this order: planner -> research -> verification -> analysis
@@ -55,7 +55,7 @@
 #         yield "analysis", {"insights":[...], "trends":[...], "risks":[...], "recommendations":[...]}
 #         yield "writer", {"report_markdown": str}
 #         yield "critic", {"score": float, "feedback": str, "strengths":[...], "improvements":[...]}
-
+#
 # Until graph/workflow.py exports run_pipeline, this file runs in DEMO MODE
 # with canned output so the UI stays fully clickable/demoable on its own.
 # """
@@ -82,7 +82,7 @@
 
 # try:
 #     from graph.workflow import run_pipeline  # teammates' real pipeline
-
+#
 #     LIVE_MODE = True
 # except ImportError:
 #     LIVE_MODE = False
@@ -279,11 +279,11 @@
 # """
 # InsightForge — Multi-Agent Research Intelligence Platform
 # Frontend entrypoint.
-
+#
 # INTEGRATION CONTRACT for whoever wires up graph/workflow.py:
-
+#
 #     from graph.workflow import run_pipeline
-
+#
 #     def run_pipeline(topic: str, use_rag: bool = True):
 #         '''Generator. Yields (step_key, payload) after each agent finishes,
 #         in this order: planner -> research -> verification -> analysis
@@ -299,7 +299,7 @@
 #         yield "analysis", {"insights":[...], "trends":[...], "risks":[...], "recommendations":[...]}
 #         yield "writer", {"report_markdown": str}
 #         yield "critic", {"score": float, "feedback": str, "strengths":[...], "improvements":[...]}
-
+#
 # Until graph/workflow.py exports run_pipeline, this file runs in DEMO MODE
 # with canned output so the UI stays fully clickable/demoable on its own.
 # """
@@ -327,7 +327,7 @@
 
 # try:
 #     from graph.workflow import run_pipeline  # teammates' real pipeline
-
+#
 #     LIVE_MODE = True
 # except ImportError:
 #     LIVE_MODE = False
@@ -457,7 +457,7 @@
 #             render_pipeline_chain(live_states)
 #     st.session_state.elapsed = time.time() - st.session_state.start_time
 #     st.session_state.running = False
-
+#
 #     verified = st.session_state.results.get("verification", {}).get("verified_sources", [])
 #     storage.log_run({
 #         "topic": st.session_state.topic_input,
@@ -572,6 +572,7 @@ import streamlit as st
 
 from ui.components import inject_css, render_header, render_sidebar
 from ui.document_reader import extract_text
+from tools.scraper import scrape_url
 
 st.set_page_config(page_title="InsightForge · Home", page_icon="◆", layout="wide")
 inject_css()
@@ -591,6 +592,11 @@ with col_main:
             "Pasted text", height=160, label_visibility="collapsed",
             placeholder="Paste the document's text here…",
         )
+    with st.expander("Or paste a URL instead"):
+        url_input = st.text_input(
+            "URL", placeholder="https://example.com/article",
+            label_visibility="collapsed",
+        )
 
 with col_side:
     st.markdown('<div class="if-card-label">Options</div>', unsafe_allow_html=True)
@@ -607,18 +613,29 @@ if analyze_clicked:
             document_name = uploaded_file.name
         except Exception as e:
             st.error(f"Couldn't read that file: {e}")
-    elif pasted_text.strip():
+
+    if not document_text.strip() and url_input.strip():
+        with st.spinner("Fetching content from URL..."):
+            result = scrape_url(url_input.strip())
+        if result["success"] and result["content"]:
+            document_text = result["content"]
+            document_name = result["title"] or url_input.strip()
+        else:
+            st.error(f"Couldn't fetch that URL: {result.get('error', 'No content found')}")
+
+    if not document_text.strip() and pasted_text.strip():
         document_text = pasted_text.strip()
+        document_name = "Pasted text"
 
     if not document_text.strip():
-        st.warning("Upload a document or paste some text first.")
+        st.warning("Upload a document, paste some text, or enter a URL first.")
     else:
         st.session_state.document_text = document_text
         st.session_state.document_name = document_name
         st.session_state.use_rag = use_rag
         st.session_state.results = {}
         st.session_state.pipeline_done = False
-        st.switch_page("pages/1_🧭_Agent_Monitor.py")
+        st.switch_page("pages/1_Agent_Monitor.py")
 
 st.markdown(
     """

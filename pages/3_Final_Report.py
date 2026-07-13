@@ -70,4 +70,4 @@ with col_side:
     except ImportError:
         st.caption("Install `python-docx` to enable DOCX export.")
 
-    st.page_link("pages/2_📊_Analysis_Dashboard.py", label="← Back to Analysis Dashboard", icon="📊")
+    st.page_link("pages/2_Analysis_Dashboard.py", label="← Back to Analysis Dashboard", icon="📊")

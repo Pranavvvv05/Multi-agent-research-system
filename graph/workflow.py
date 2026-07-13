@@ -25,7 +25,7 @@ class ResearchState(TypedDict):
 model = ChatMistralAI(
     model="mistral-small-latest",
     api_key=os.getenv("MISTRAL_API_KEY"),
-    timeout=60,
+    timeout=180,
     max_retries=2,
 )
 
@@ -98,3 +98,93 @@ graph.add_edge("writer", "critic")
 graph.add_edge("critic", END)
 
 workflow = graph.compile()
+
+def run_pipeline(document_text: str, use_rag: bool = True):
+    """
+    Generator required by app.py. Runs each agent in sequence
+    and yields (step_key, payload) after every step finishes, mapped
+    to the exact shape the UI expects.
+    """
+    state: ResearchState = {
+        "query": document_text,
+        "plan": {}, "research_results": {}, "verified_results": {},
+        "analysis_results": {}, "sources": [], "report": "", "critic_review": {},
+    }
+
+    # ── Planner ──────────────────────────────────────────────
+    state = planner_node(state)
+    plan = state["plan"]
+    subtopics = plan.get("tasks") or []
+    yield "planner", {"subtopics": subtopics}
+
+    # ── Research ─────────────────────────────────────────────
+    state = research_node(state)
+    research_tasks = state["research_results"].get("research_results") or []
+    sources = []
+    for task in research_tasks:
+        for url in task.get("sources", []):
+            sources.append({
+                "title": task.get("task", "Untitled"),
+                "url": url,
+                "source_type": "web",
+            })
+    yield "research", {"sources": sources}
+
+    # ── Verification ─────────────────────────────────────────
+    state = verification_node(state)
+    verified_tasks = state["verified_results"].get("verified_results") or []
+    verified_sources = []
+    conflicts = []
+    quality_to_score = {"high": 90, "medium": 65, "low": 30}
+    for task in verified_tasks:
+        for vs in task.get("verified_sources", []):
+            quality = vs.get("source_quality", "medium")
+            verified_sources.append({
+                "title": task.get("task", "Untitled"),
+                "url": vs.get("source", ""),
+                "trust_score": quality_to_score.get(quality, 50),
+                "status": "unverified" if quality == "low" else "verified",
+            })
+        for c in task.get("conflicting_information", []):
+            conflicts.append(c.get("claim", str(c)) if isinstance(c, dict) else str(c))
+    yield "verification", {"verified_sources": verified_sources, "conflicts": conflicts}
+
+    # ── Analysis ─────────────────────────────────────────────
+    state = analysis_node(state)
+    analysis_tasks = state["analysis_results"].get("analysis_results") or []
+    insights, trends, risks, recommendations = [], [], [], []
+    for task in analysis_tasks:
+        insights.extend(task.get("key_insights", []))
+        trends.extend(task.get("trends", []))
+        risks.extend(task.get("risks", []))
+        recommendations.extend(task.get("recommendations", []))
+    yield "analysis", {
+        "insights": insights,
+        "trends": trends,
+        "risks": risks,
+        "recommendations": recommendations,
+    }
+
+    # ── Writer ───────────────────────────────────────────────
+    state = writer_node(state)
+    report = state["report"]
+    report_text = report if isinstance(report, str) else ""
+    yield "writer", {
+        "executive_summary": report_text,
+        "report_markdown": report_text,
+        "key_findings": [],
+        "important_concepts": [],
+        "strengths": [],
+        "weaknesses": [],
+        "recommendations": [],
+    }
+
+    # ── Critic ───────────────────────────────────────────────
+    state = critic_node(state)
+    c = state["critic_review"]
+    yield "critic", {
+        "score": c.get("overall_score", 0),
+        "feedback": "; ".join(c.get("issues", [])) or c.get("review_status", ""),
+        "strengths": c.get("strengths", []),
+        "improvements": c.get("improvement_suggestions", []),
+    }

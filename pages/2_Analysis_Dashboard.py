@@ -77,4 +77,4 @@ with col_right:
         a = results["analysis"]
         render_analysis(a.get("insights", []), a.get("trends", []), a.get("risks", []), a.get("recommendations", []))
 
-st.page_link("pages/3_📄_Final_Report.py", label="View Final Report →", icon="📄")
+st.page_link("pages/3_Final_Report.py", label="View Final Report →", icon="📄")
