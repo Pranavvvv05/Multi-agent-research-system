@@ -319,10 +319,9 @@ Analysis Responsibilities:
 - Identify key insights from the available evidence.
 - Detect patterns across findings.
 - Identify trends and emerging developments.
-- Compare findings when relevant.
 - Identify opportunities and advantages.
 - Identify risks, limitations and challenges.
-- Explain implications of the findings.
+- Generate actionable recommendations.
 - Highlight the most important observations.
 - Generate evidence-based insights only.
 - Base every conclusion on the provided verified information.
@@ -337,15 +336,13 @@ Analysis Rules:
 - Focus on extracting meaning from verified information.
 - Prioritize high-confidence findings when generating insights.
 
-Insight Categories:
+Analysis Categories:
 
 - Key Insights
-- Identified Trends
-- Opportunities
+- Trends
 - Risks
-- Comparisons
-- Implications
-- Strategic Observations
+- Opportunities
+- Recommendations
 
 Output Rules:
 
@@ -362,40 +359,38 @@ Output Format:
   "analysis_results": [
     {{
       "task": "Research Task Name",
+
       "key_insights": [
         "Insight 1",
         "Insight 2"
       ],
-      "identified_trends": [
+
+      "trends": [
         "Trend 1",
         "Trend 2"
       ],
-      "comparisons": [
-        "Comparison 1"
-      ],
-      "opportunities": [
-        "Opportunity 1",
-        "Opportunity 2"
-      ],
+
       "risks": [
         "Risk 1",
         "Risk 2"
       ],
-      "implications": [
-        "Implication 1",
-        "Implication 2"
+
+      "opportunities": [
+        "Opportunity 1",
+        "Opportunity 2"
       ],
-      "strategic_observations": [
-        "Observation 1",
-        "Observation 2"
+
+      "recommendations": [
+        "Recommendation 1",
+        "Recommendation 2"
       ]
     }}
   ],
+
   "overall_summary": [
     "Summary Point 1",
     "Summary Point 2"
-  ],
-  "overall_confidence": 0.90
+  ]
 }}
 """
     ),
@@ -432,16 +427,14 @@ Your task is to transform the analysis results into a clear, professional and we
 Writing Responsibilities:
 
 - Create a professional report structure.
-- Write a concise executive summary.
-- Create a clear introduction.
-- Present key findings in a readable format.
-- Summarize trends identified by the Analysis Agent.
-- Present opportunities and advantages.
-- Present risks and challenges.
-- Summarize future outlook and implications.
-- Write a strong conclusion.
+- Write a clear introduction.
+- Present key findings from the analysis.
+- Summarize important insights, trends, risks and opportunities.
+- Generate actionable recommendations.
+- Write a concise conclusion.
+- Include sources used during research.
 - Preserve factual accuracy.
-- Use only the information provided by the Analysis Agent.
+- Use only the information provided by upstream agents.
 
 Writing Style Guidelines:
 
@@ -458,29 +451,23 @@ Report Structure:
 
 # Report Title
 
-## Executive Summary
-Provide a concise overview of the report.
-
 ## Introduction
 Introduce the topic and research objective.
 
 ## Key Findings
-Present the most important findings.
+Present the most important findings identified by the Analysis Agent.
 
-## Trend Analysis
-Discuss major trends and patterns.
+## Analysis
+Summarize key insights, trends, risks and opportunities.
 
-## Opportunities
-Highlight opportunities and advantages.
-
-## Risks and Challenges
-Discuss risks, limitations and concerns.
-
-## Future Outlook
-Describe future implications and possible developments.
+## Recommendations
+Provide actionable recommendations based on the analysis.
 
 ## Conclusion
 Provide a concise conclusion based on the analyzed findings.
+
+## Sources
+List all available research sources used during the research process.
 
 Output Rules:
 
@@ -490,6 +477,7 @@ Output Rules:
 - Do not return markdown code blocks.
 - Do not include explanations outside the report.
 - Use only the provided analysis results.
+- Include all available sources in the Sources section.
 """
     ),
     (
@@ -498,6 +486,10 @@ Output Rules:
 Analysis Results:
 
 {analysis_results}
+
+Sources:
+
+{sources}
 """
     )
 ])
