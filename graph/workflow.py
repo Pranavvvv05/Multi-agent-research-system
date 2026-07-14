@@ -156,6 +156,8 @@ def run_pipeline(document_text: str, use_rag: bool = True):
             })
     yield "research", {"sources": raw_sources}
 
+    state = research_node(state)
+
     # ── Verification ─────────────────────────────────────────
     state = verification_node(state)
     verified_tasks = state["verified_results"].get("verified_results") or []
@@ -189,6 +191,8 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "source_relevance": source_relevance,
         "relevance_score": source_relevance,
     }
+
+    state = verification_node(state)
 
     # ── Analysis ─────────────────────────────────────────────
     state = analysis_node(state)
