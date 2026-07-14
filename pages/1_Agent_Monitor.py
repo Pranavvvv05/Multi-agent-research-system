@@ -16,6 +16,7 @@ from ui.components import (
     render_page_header,
     render_progress_bar,
 )
+from ui.history_storage import save_history_entry
 
 try:
     from graph.workflow import run_pipeline
@@ -131,6 +132,21 @@ if not st.session_state.pipeline_done:
             _draw(live_states)
     st.session_state.elapsed = time.time() - start_time
     st.session_state.pipeline_done = True
+
+    # ── Save this completed run to persistent search history ──────────
+    # Stores the full results dict (planner/research/verification/
+    # analysis/writer/critic — scores, sources, report, everything) so
+    # the sidebar's "Recent Runs" list can reload it later.
+    try:
+        save_history_entry(
+            document_name=st.session_state.document_name,
+            results=st.session_state.results,
+            elapsed=st.session_state.elapsed,
+            use_rag=st.session_state.get("use_rag"),
+        )
+    except Exception as e:
+        st.warning(f"Couldn't save this run to history: {e}")
+
     st.rerun()
 else:
     st.success("Analysis complete.")

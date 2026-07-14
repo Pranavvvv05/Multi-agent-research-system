@@ -3,6 +3,7 @@ pages/3_📄_Final_Report.py — the polished, downloadable output.
 Reads results["writer"] (see app.py's docstring for its exact shape).
 """
 
+import re
 import streamlit as st
 
 from ui.components import (
@@ -36,10 +37,36 @@ render_page_header(
     f"Generated from {document_name}",
 )
 
+
+def format_report_for_display(text: str) -> str:
+    """
+    Converts markdown '#' headings into arrow-style headers (→ Heading)
+    to match the rest of the app's visual style, instead of raw '#'.
+    Bold '**text**' is left as-is since st.markdown renders that natively.
+    """
+    if not text:
+        return text
+
+    lines = text.split("\n")
+    formatted = []
+    for line in lines:
+        stripped = line.strip()
+        match = re.match(r"^(#{1,6})\s+(.*)", stripped)
+        if match:
+            heading_text = match.group(2).strip()
+            formatted.append(f"**→ {heading_text}**")
+        else:
+            formatted.append(line)
+    return "\n".join(formatted)
+
+
 col_main, col_side = st.columns([2.4, 1])
 
 with col_main:
-    render_text_panel("Executive Summary", writer.get("executive_summary", ""), "signal")
+    st.markdown('<div class="if-card-label">Executive Summary</div>', unsafe_allow_html=True)
+    summary_text = format_report_for_display(writer.get("executive_summary", ""))
+    st.markdown(summary_text or "_No summary available._")
+
     render_numbered_list("Key Findings", writer.get("key_findings", []), "signal")
     render_concepts(writer.get("important_concepts", []))
     render_swot(writer.get("strengths", []), writer.get("weaknesses", []))
@@ -50,7 +77,6 @@ with col_side:
 
     export_payload = {**writer, "title": document_name}
 
-    export_payload = {**writer, "title": document_name}
     try:
         pdf_bytes = generate_pdf(export_payload)
         st.download_button(
