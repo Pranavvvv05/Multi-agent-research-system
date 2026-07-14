@@ -162,9 +162,16 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     verified_sources = []
     conflicts = []
     quality_to_score = {"high": 90, "medium": 65, "low": 30}
+
+    total_sources = 0
+    relevant_sources = 0  # high or medium quality counts as "relevant"
+
     for task in verified_tasks:
         for vs in task.get("verified_sources", []):
             quality = vs.get("source_quality", "medium")
+            total_sources += 1
+            if quality in ("high", "medium"):
+                relevant_sources += 1
             verified_sources.append({
                 "title": task.get("task", "Untitled"),
                 "url": vs.get("source", ""),
@@ -173,7 +180,15 @@ def run_pipeline(document_text: str, use_rag: bool = True):
             })
         for c in task.get("conflicting_information", []):
             conflicts.append(c.get("claim", str(c)) if isinstance(c, dict) else str(c))
-    yield "verification", {"verified_sources": verified_sources, "conflicts": conflicts}
+
+    source_relevance = round((relevant_sources / total_sources) * 100, 1) if total_sources else 0
+
+    yield "verification", {
+        "verified_sources": verified_sources,
+        "conflicts": conflicts,
+        "source_relevance": source_relevance,
+        "relevance_score": source_relevance,
+    }
 
     # ── Analysis ─────────────────────────────────────────────
     state = analysis_node(state)
