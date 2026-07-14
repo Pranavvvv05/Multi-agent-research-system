@@ -18,7 +18,7 @@ class ResearchState(TypedDict):
     research_results: Dict[str, Any]
     verified_results: Dict[str, Any]
     analysis_results: Dict[str, Any]
-    sources: List[str]
+    sources: List[Dict[str, str]]
     report: str
     critic_review: Dict[str, Any]
 
@@ -27,6 +27,7 @@ model = ChatMistralAI(
     api_key=os.getenv("MISTRAL_API_KEY"),
     timeout=180,
     max_retries=2,
+    max_tokens=1500,  # caps response length -> also helps latency
 )
 
 planner = PlannerAgent(model)
@@ -60,18 +61,42 @@ def analysis_node(state: ResearchState) -> ResearchState:
     return state
 
 
-def extract_sources(verified_results: Dict[str, Any]) -> List[str]:
-    sources = set()
+def extract_sources(verified_results: Dict[str, Any]) -> List[Dict[str, str]]:
+    """
+    Returns a deduplicated, alphabetically sorted list of
+    {"title": ..., "url": ...} dicts built from verified sources.
+    """
+    seen = {}
     for task in verified_results.get("verified_results", []):
+        task_name = task.get("task", "Source")
         for src in task.get("verified_sources", []):
-            if src.get("source"):
-                sources.add(src["source"])
-    return list(sources)
+            url = src.get("source")
+            if url and url not in seen:
+                seen[url] = task_name
+
+    return sorted(
+        [{"title": title, "url": url} for url, title in seen.items()],
+        key=lambda x: x["title"]
+    )
+
+
+def build_sources_markdown(sources: List[Dict[str, str]]) -> str:
+    """Generates a clean, ordered, clickable Sources section as markdown."""
+    if not sources:
+        return "\n## Sources\nNo verified sources available.\n"
+    lines = ["\n## Sources"]
+    for i, s in enumerate(sources, 1):
+        lines.append(f"{i}. [{s['title']}]({s['url']})")
+    return "\n".join(lines)
 
 
 def writer_node(state: ResearchState) -> ResearchState:
     state["sources"] = extract_sources(state["verified_results"])
-    state["report"] = writer_agent.write_report(state["analysis_results"], state["sources"])
+    raw_report = writer_agent.write_report(state["analysis_results"], state["sources"])
+    sources_section = build_sources_markdown(state["sources"])
+    # Append our own generated Sources section instead of relying on the LLM
+    # to write clickable, ordered links itself.
+    state["report"] = f"{raw_report}\n{sources_section}"
     return state
 
 
@@ -99,6 +124,7 @@ graph.add_edge("critic", END)
 
 workflow = graph.compile()
 
+
 def run_pipeline(document_text: str, use_rag: bool = True):
     """
     Generator required by app.py. Runs each agent in sequence
@@ -120,15 +146,15 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     # ── Research ─────────────────────────────────────────────
     state = research_node(state)
     research_tasks = state["research_results"].get("research_results") or []
-    sources = []
+    raw_sources = []
     for task in research_tasks:
         for url in task.get("sources", []):
-            sources.append({
+            raw_sources.append({
                 "title": task.get("task", "Untitled"),
                 "url": url,
                 "source_type": "web",
             })
-    yield "research", {"sources": sources}
+    yield "research", {"sources": raw_sources}
 
     # ── Verification ─────────────────────────────────────────
     state = verification_node(state)
@@ -152,31 +178,32 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     # ── Analysis ─────────────────────────────────────────────
     state = analysis_node(state)
     analysis_tasks = state["analysis_results"].get("analysis_results") or []
-    insights, trends, risks, recommendations = [], [], [], []
+    insights, trends, risks, opportunities, recommendations_analysis = [], [], [], [], []
     for task in analysis_tasks:
         insights.extend(task.get("key_insights", []))
         trends.extend(task.get("trends", []))
         risks.extend(task.get("risks", []))
-        recommendations.extend(task.get("recommendations", []))
+        opportunities.extend(task.get("opportunities", []))
+        recommendations_analysis.extend(task.get("recommendations", []))
     yield "analysis", {
         "insights": insights,
         "trends": trends,
         "risks": risks,
-        "recommendations": recommendations,
+        "recommendations": recommendations_analysis,
     }
 
     # ── Writer ───────────────────────────────────────────────
     state = writer_node(state)
-    report = state["report"]
-    report_text = report if isinstance(report, str) else ""
+    report_text = state["report"] if isinstance(state["report"], str) else ""
+
     yield "writer", {
         "executive_summary": report_text,
         "report_markdown": report_text,
-        "key_findings": [],
-        "important_concepts": [],
-        "strengths": [],
-        "weaknesses": [],
-        "recommendations": [],
+        "key_findings": insights,
+        "important_concepts": trends,
+        "strengths": opportunities,
+        "weaknesses": risks,
+        "recommendations": recommendations_analysis,
     }
 
     # ── Critic ───────────────────────────────────────────────
