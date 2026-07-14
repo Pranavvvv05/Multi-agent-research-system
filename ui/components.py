@@ -1,5 +1,3 @@
-
-
 # """
 # ui/components.py
 # -----------------
@@ -619,7 +617,15 @@ def render_navbar():
 
 def render_sidebar(active_label: str):
     """Custom branded left sidebar, replaces Streamlit's default page list.
-    active_label: current page's label from NAV_PAGES, to highlight it."""
+    active_label: current page's label from NAV_PAGES, to highlight it.
+
+    Also renders a "Recent Runs" search-history list underneath the nav
+    links, backed by ui/history_storage.py (a flat JSON file on disk).
+    Clicking a past run reloads its full results into session_state and
+    jumps to the Final Report page.
+    """
+    from ui.history_storage import load_history  # local import avoids circulars
+
     with st.sidebar:
         _md(
             """
@@ -634,9 +640,34 @@ def render_sidebar(active_label: str):
             st.markdown(f'<div class="{wrapper_class}">', unsafe_allow_html=True)
             st.page_link(path, label=label, icon=icon, use_container_width=True)
             st.markdown("</div>", unsafe_allow_html=True)
+
+        # ── Search History ───────────────────────────────────────────
+        # Shows the last 10 completed pipeline runs. Each entry is saved
+        # by pages/1_Agent_Monitor.py right after the pipeline finishes,
+        # and stores the FULL results dict (scores, sources, report —
+        # everything), not just the query/title.
+        _md('<div class="if-sidebar-footer" style="margin-top:1rem;">Recent Runs</div>')
+        history = load_history()
+        if not history:
+            st.caption("No past runs yet.")
+        else:
+            import datetime
+            for entry in history[:10]:
+                ts = datetime.datetime.fromtimestamp(entry["timestamp"]).strftime("%d %b, %H:%M")
+                label_text = entry["document_name"][:28]
+                if st.button(f"📄 {label_text}\n{ts}", key=f"hist_{entry['id']}", use_container_width=True):
+                    # Reload this past run's full results into the
+                    # current session and jump straight to the report.
+                    st.session_state.results = entry["results"]
+                    st.session_state.document_name = entry["document_name"]
+                    st.session_state.elapsed = entry.get("elapsed")
+                    st.session_state.pipeline_done = True
+                    st.switch_page("pages/3_Final_Report.py")
+
         _md(
             '<div class="if-sidebar-footer">InsightForge<br>LangGraph · ChromaDB RAG</div>'
         )
+
 
 def render_header():
     _md(
