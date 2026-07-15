@@ -49,20 +49,12 @@ html, body, [class*="css"] {
     color: var(--text);
 }
 
-/* ── Main App Background ────────────────────────────────── */
-/* ── Main App Background (Fixed Visibility) ────────────────────────────────── */
-/* ── Main App Background (Stronger Golden Blend) ────────────────────────── */
-/* ── Main App Background (Dual Golden Glow) ────────────────────────── */
 .stApp {
     background-color: #120d20;
     background-image: 
-        /* Top-Left ka Golden Glow */
         radial-gradient(circle 700px at 5% 5%, rgba(232, 176, 89, 0.22) 0%, transparent 60%),
-        /* Bottom-Right ka Golden Glow */
         radial-gradient(circle 800px at 90% 85%, rgba(204, 132, 33, 0.25) 0%, transparent 65%),
-        /* Dark overlay */
         linear-gradient(rgba(18, 13, 32, 0.65), rgba(18, 13, 32, 0.85)),
-        /* Network Image */
         url('https://i.postimg.cc/25TnQhLZ/bg-img.png'); 
         
     background-size: cover; 
@@ -71,15 +63,12 @@ html, body, [class*="css"] {
     background-repeat: no-repeat;
 }
 
-/* Optional: Agar tumhare main app container ko thoda dark transparent background dena ho taaki text aur pop ho */
 .block-container {
-    background: rgba(18, 13, 32, 0.4); /* Halka sa glass effect main content ke piche */
+    background: rgba(18, 13, 32, 0.4);
     border-radius: 16px;
     margin-top: 1rem;
 }
 
-/* ── FIX: MainMenu/footer hide, but header stays functional
-   so the sidebar reopen arrow (which lives inside header) survives ── */
 #MainMenu, footer { visibility: hidden; }
 
 header[data-testid="stHeader"] {
@@ -87,7 +76,6 @@ header[data-testid="stHeader"] {
     box-shadow: none !important;
 }
 
-/* Sidebar reopen arrow — force it to always be visible/clickable */
 [data-testid="stSidebarCollapsedControl"] {
     visibility: visible !important;
     display: flex !important;
@@ -360,10 +348,16 @@ header[data-testid="stHeader"] {
     font-size: 0.86rem; font-weight: 500; color: var(--text);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* FIX: <a> tags are inline by default, so text-overflow:ellipsis was
+   not being applied reliably — that's why the URL was spilling out of
+   the box. display:block (+ max-width:100%) makes the ellipsis truncation
+   actually work within the panel width. */
 .if-source-url {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.68rem; color: var(--text-faint);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
 }
 .if-trust-tag {
     font-family: 'IBM Plex Mono', monospace;
@@ -546,9 +540,7 @@ details summary {
 [data-testid="stSidebarNav"] { display: none; }
 
 [data-testid="stSidebar"] {
-    /* Slightly transparent background */
     background: rgba(30, 23, 51, 0.6) !important; 
-    /* The magic blur effect */
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-right: 1px solid var(--border);
@@ -578,11 +570,9 @@ details summary {
     font-weight: 700; 
     font-size: 0.85rem;
     
-    /* 👇 Purple brand gradient ki jagah rich Golden/Copper gradient 👇 */
     background: linear-gradient(135deg, #f3c77c, #cc8421) !important;
-    color: #120d20 !important; /* Text color ko dark kiya hai taaki gold par clear dikhe */
+    color: #120d20 !important;
     
-    /* Soft golden neon glow box ke charo taraf */
     box-shadow: 0 0 14px rgba(232, 176, 89, 0.4) !important;
 }
 .if-sidebar-brand-name {
@@ -599,19 +589,16 @@ details summary {
 
 /* ── Sidebar Box/Card Links ────────────────────────────── */
 [data-testid="stSidebar"] [data-testid="stPageLink"] {
-    /* Box Look (Matches your main cards) */
     background: var(--surface);
     border: 1px solid var(--border-strong);
     border-radius: 10px;
     padding: 0.8rem 1rem;
-    margin-bottom: 0.75rem; /* Space between boxes */
+    margin-bottom: 0.75rem;
     
-    /* Subtle depth */
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 2px 4px rgba(0,0,0,0.2);
     transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Hover Effect - Slight lift and glow */
 [data-testid="stSidebar"] [data-testid="stPageLink"]:hover {
     background: var(--surface-2);
     border-color: var(--insight);
@@ -619,7 +606,6 @@ details summary {
     box-shadow: 0 6px 16px rgba(167, 139, 250, 0.12);
 }
 
-/* Text styling inside the box */
 [data-testid="stSidebar"] [data-testid="stPageLink"] p {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.92rem;
@@ -629,16 +615,12 @@ details summary {
 }
 
 /* Active Page Box - Highlighted state */
-/* ── Glowing Active Sidebar Box (Reference Style) ───────── */
 .if-sidebar-active [data-testid="stPageLink"] {
-    /* Halka copper transparent background blend */
     background: linear-gradient(135deg, rgba(232, 176, 89, 0.12), rgba(204, 132, 33, 0.04)) !important; 
     
-    /* Golden/Copper Border */
     border: 1px solid rgba(232, 176, 89, 0.5) !important; 
-    border-left: 4px solid var(--gold-accent) !important; /* Left sharp accent line */
+    border-left: 4px solid var(--gold-accent) !important;
     
-    /* 👇 MAIN GLOW EFFECT: Isse button ke piche aur charo taraf golden neon glow aayega 👇 */
     box-shadow: 
         0 4px 20px rgba(232, 176, 89, 0.18), 
         inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
@@ -646,11 +628,9 @@ details summary {
     transition: all 0.3s ease !important;
 }
 
-/* Active Text styling inside the glowing box */
 .if-sidebar-active [data-testid="stPageLink"] p {
-    color: #fce8c8 !important; /* Text ko ekdum bright creamy gold color diya hai */
+    color: #fce8c8 !important;
     font-weight: 700 !important;
-    /* Text par bhi halka sa glowing effect */
     text-shadow: 0 0 8px rgba(232, 176, 89, 0.4) !important;
 }
 
@@ -710,8 +690,8 @@ details summary {
     border: 1px solid var(--border-strong) !important;
     border-radius: 8px !important;
     padding: 0.8rem 1.4rem !important;
-    margin-top: 2rem !important; /* Ye button ko niche push karega */
-    display: inline-flex !important; /* Button ko text ke size ka rakhega */
+    margin-top: 2rem !important;
+    display: inline-flex !important;
     width: max-content !important;
     transition: all 0.2s ease !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04) !important;
@@ -750,9 +730,9 @@ details summary {
 
 /* 3. Main Analyze Button ka border aur shadow golden */
 .stButton > button {
-    background: linear-gradient(135deg, #a78bfa, #7c3aed) !important; /* Button purple rahega */
-    border: 1px solid #e8b059 !important; /* Golden border */
-    box-shadow: 0 4px 18px rgba(232, 176, 89, 0.3) !important; /* Golden glow */
+    background: linear-gradient(135deg, #a78bfa, #7c3aed) !important;
+    border: 1px solid #e8b059 !important;
+    box-shadow: 0 4px 18px rgba(232, 176, 89, 0.3) !important;
 }
 
 /* 4. Active Sidebar Box - Pure Golden Touch */
@@ -763,7 +743,7 @@ details summary {
     box-shadow: 0 4px 20px rgba(232, 176, 89, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
 }
 .if-sidebar-active [data-testid="stPageLink"] p {
-    color: #fce8c8 !important; /* Bright gold text */
+    color: #fce8c8 !important;
     font-weight: 700 !important;
     text-shadow: 0 0 8px rgba(232, 176, 89, 0.5) !important;
 }
@@ -771,15 +751,10 @@ details summary {
 
 /* ── ENTRY ANIMATIONS (Welcome Effect) ───────────────────────── */
 
-/* ── ENTRY ANIMATIONS (Streamlit Fix) ───────────────────────── */
-
-/* 1. Main Dashboard Fade-Up Animation */
-/* ── FIX FOR THE STUCK POP-UP (Transform Trap Removed) ── */
-/* ── 1. Main Dashboard Animation (TRAP REMOVED) ───────────────────────── */
 @keyframes fadeUpEntry {
     0% { 
         opacity: 0; 
-        top: 40px;  /* Transform hata diya, ab top use kar rahe hain */
+        top: 40px;
     }
     100% { 
         opacity: 1; 
@@ -788,7 +763,7 @@ details summary {
 }
 
 .stApp .block-container {
-    position: relative !important; /* Ye top ko kaam karne dega */
+    position: relative !important;
     -webkit-animation: fadeUpEntry 1s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
     animation: fadeUpEntry 1s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
 }
@@ -806,7 +781,6 @@ details summary {
     }
 }
 
-/* Sidebar ke direct inner container ko target kiya */
 [data-testid="stSidebar"] > div {
     -webkit-animation: slideInLeft 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
     animation: slideInLeft 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
@@ -829,18 +803,15 @@ details summary {
 }
 
 .if-sidebar-brand-mark {
-    -webkit-animation: goldPulse 1.5s ease-out 0.2s both !important; /* 0.2s ka delay diya hai taaki load hone ke baad chale */
+    -webkit-animation: goldPulse 1.5s ease-out 0.2s both !important;
     animation: goldPulse 1.5s ease-out 0.2s both !important;
 }
 
 /* ── WELCOME POP-UP ANIMATION ───────────────────────── */
 
-/* ── ENTRY ANIMATIONS (Bottom-Right Pop-up) ───────────────────────── */
-
 @keyframes premiumBottomRightPopIn {
     0% {
         opacity: 0;
-        /* Ab center transform nahi hoga, sirf Y-axis par bounce karega */
         transform: translateY(40px) scale(0.95);
     }
     70% {
@@ -852,42 +823,33 @@ details summary {
     }
 }
 
-/* Custom Welcome Card Class (Bottom Right Notification Style) */
 .if-welcome-popup {
     background: linear-gradient(135deg, var(--surface), var(--bg-raised)) !important;
-    border: 1px solid rgba(232, 176, 89, 0.4) !important; /* Golden border */
+    border: 1px solid rgba(232, 176, 89, 0.4) !important;
     border-radius: 12px !important;
     padding: 1.2rem 1.4rem !important;
     
-    /* 👇 POSITION FIXED TO BOTTOM RIGHT 👇 */
-    /* 👇 IN EXACT LINES KO CHANGE KAREIN 👇 */
     position: fixed !important;
-    bottom: 15px !important;  /* Isko 2.5rem se kam karke 15px (ya 0px) kar diya taaki ekdum bottom mein chala jaye */
-    right: 20px !important;   /* Right corner se thoda sa gap rakhne ke liye */
+    bottom: 15px !important;
+    right: 20px !important;
     left: auto !important;
-    /* Pehle wala left setting hatane ke liye */
     
-    /* 👇 WIDTH ADJUSTMENT 👇 */
     width: auto !important;
-    max-width: 420px !important; /* Box ko zyada failne se rokega */
+    max-width: 420px !important;
     z-index: 99999 !important; 
     
-    /* Shadow taaki wo baki elements ke upar clearly dikhe */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(232, 176, 89, 0.1) !important;
     
-    /* Animation settings */
     -webkit-animation: premiumBottomRightPopIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
     animation: premiumBottomRightPopIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) both !important;
     animation-delay: 0.1s !important; 
 }
 
-/* Welcome Card Text Settings */
 .if-welcome-popup h2 {
     color: var(--text) !important;
     font-family: 'Space Grotesk', sans-serif !important;
     font-size: 1.2rem !important; 
     margin: 0 0 0.3rem 0 !important;
-    /* 👇 Is command se heading hamesha ek line mein rahegi 👇 */
     white-space: nowrap !important; 
 }
 

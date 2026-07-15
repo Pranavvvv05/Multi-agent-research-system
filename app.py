@@ -605,7 +605,7 @@ with col_side:
 
 if analyze_clicked:
     document_text = ""
-    document_name = "Pasted text"
+    document_name = "Pasted Document"
 
     if uploaded_file is not None:
         try:
@@ -625,7 +625,13 @@ if analyze_clicked:
 
     if not document_text.strip() and pasted_text.strip():
         document_text = pasted_text.strip()
-        document_name = "Pasted text"
+        # FIX: give pasted text a document-like title (first line/words)
+        # instead of the generic "Pasted text" label, so it reads the
+        # same way an uploaded file or scraped URL title would —
+        # regardless of source, the app always feels like it's
+        # analyzing "a document".
+        first_line = pasted_text.strip().split("\n", 1)[0][:60].rsplit(" ", 1)[0]
+        document_name = first_line or "Pasted Document"
 
     if not document_text.strip():
         st.warning("Upload a document, paste some text, or enter a URL first.")

@@ -1101,7 +1101,6 @@ PAYLOAD SCHEMA (what each render_* function expects) is documented
 above each function so the shapes stay obvious without cross-referencing
 the page files.
 """
-
 import html
 from pathlib import Path
 
@@ -1403,9 +1402,12 @@ def render_sources(sources: list[dict]):
             # FIX (#1): previously this was a plain <div> holding the
             # URL as text — never clickable. Now it's a real <a> tag
             # that opens the source in a new tab.
+            # FIX (#2): added a `title` attribute so hovering over a
+            # truncated URL (see styles.css .if-source-url) shows the
+            # full link as a native tooltip.
             url_html = (
                 f'<a href="{html.escape(url)}" target="_blank" rel="noopener noreferrer" '
-                f'class="if-source-url">{html.escape(url)}</a>'
+                f'class="if-source-url" title="{html.escape(url)}">{html.escape(url)}</a>'
                 if url else '<div class="if-source-url">No URL available</div>'
             )
             parts.append(
@@ -1433,10 +1435,11 @@ def render_verification(verified_sources: list[dict], conflicts: list[str]):
         bar_color = color_map.get(status, "var(--text-faint)")
         url = s.get("url", "")
         title = html.escape(s.get("title", "Untitled"))
-        # FIX (#1): same as render_sources — make the URL an actual link.
+        # FIX (#1) + FIX (#2): same as render_sources — clickable link,
+        # plus a title attribute for the full-URL tooltip on hover.
         url_html = (
             f'<a href="{html.escape(url)}" target="_blank" rel="noopener noreferrer" '
-            f'class="if-source-url">{html.escape(url)}</a>'
+            f'class="if-source-url" title="{html.escape(url)}">{html.escape(url)}</a>'
             if url else '<div class="if-source-url">No URL available</div>'
         )
         parts.append(
