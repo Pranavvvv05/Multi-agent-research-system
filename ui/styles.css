@@ -78,7 +78,30 @@ html, body, [class*="css"] {
     margin-top: 1rem;
 }
 
-#MainMenu, footer, header { visibility: hidden; }
+/* ── FIX: MainMenu/footer hide, but header stays functional
+   so the sidebar reopen arrow (which lives inside header) survives ── */
+#MainMenu, footer { visibility: hidden; }
+
+header[data-testid="stHeader"] {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Sidebar reopen arrow — force it to always be visible/clickable */
+[data-testid="stSidebarCollapsedControl"] {
+    visibility: visible !important;
+    display: flex !important;
+    opacity: 1 !important;
+    z-index: 999999 !important;
+}
+
+[data-testid="stSidebarCollapsedControl"] button {
+    background: var(--surface) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+}
+
 .block-container { padding: 1.6rem 2.4rem 4rem; max-width: 1180px; }
 
 /* ── Header ─────────────────────────────────────────────── */
