@@ -614,7 +614,7 @@ with col_main:
 with col_side:
     st.markdown('<div class="if-card-label">Options</div>', unsafe_allow_html=True)
     use_rag = st.checkbox("Verify against ChromaDB + web sources", value=True)
-    analyze_clicked = st.button("Analyze Document", use_container_width=True)
+    analyze_clicked = st.button("Analyze", use_container_width=True)
 
 if analyze_clicked:
     document_text = ""
