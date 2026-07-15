@@ -585,6 +585,8 @@ inject_css()
 render_sidebar("Home")
 render_header()
 
+MAX_WORDS = 5000  # ← change this number to set a different word limit
+
 col_main, col_side = st.columns([2.2, 1])
 
 with col_main:
@@ -598,6 +600,13 @@ with col_main:
             "Pasted text", height=160, label_visibility="collapsed",
             placeholder="Paste the document's text here…",
         )
+        # Live word counter + warning if over the limit
+        if pasted_text.strip():
+            word_count = len(pasted_text.split())
+            if word_count > MAX_WORDS:
+                st.warning(f"⚠ {word_count} words — please keep it under {MAX_WORDS} words.")
+            else:
+                st.caption(f"{word_count} / {MAX_WORDS} words")
     with st.expander("Or paste a URL instead"):
         url_input = st.text_input(
             "URL", placeholder="https://example.com/article",
@@ -630,6 +639,12 @@ if analyze_clicked:
             st.error(f"Couldn't fetch that URL: {result.get('error', 'No content found')}")
 
     if not document_text.strip() and pasted_text.strip():
+        # Enforce the word limit before accepting pasted text
+        word_count = len(pasted_text.split())
+        if word_count > MAX_WORDS:
+            st.error(f"Pasted text is too long ({word_count} words). Please keep it under {MAX_WORDS} words.")
+            st.stop()
+
         document_text = pasted_text.strip()
         # Give pasted text a document-like title (first line/words)
         # instead of the generic "Pasted text" label, so it reads the

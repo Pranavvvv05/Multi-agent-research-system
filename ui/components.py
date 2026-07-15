@@ -21,7 +21,7 @@ def _md(content: str):
     Streamlit's markdown parser treats any line indented 4+ spaces as a
     code block, so we strip per-line leading whitespace first.
 
-    IMPORTANT: build a panel's ENTIRE inner HTML as one string and pass
+    IMPORTANT: build a panel's ENTIRE inner HTML as one string and pass 
     it to a single _md() call. Each st.markdown() call is parsed by the
     browser independently — if you open a <div> in one call and close
     it in a later call, the browser auto-closes the unclosed div at the
