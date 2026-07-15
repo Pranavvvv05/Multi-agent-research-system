@@ -138,11 +138,13 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     # ── Planner ──────────────────────────────────────────────
     state = planner_node(state)
     plan = state["plan"]
+    print("DEBUG RAW PLAN:", plan)  # 👈 DEBUG
     subtopics = plan.get("tasks") or []
     yield "planner", {"subtopics": subtopics}
 
     # ── Research ─────────────────────────────────────────────
     state = research_node(state)
+    print("DEBUG RAW RESEARCH RESULTS:", state["research_results"])  # 👈 DEBUG
     research_tasks = state["research_results"].get("research_results") or []
     raw_sources = []
     for task in research_tasks:
@@ -156,6 +158,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
 
     # ── Verification ─────────────────────────────────────────
     state = verification_node(state)
+    print("DEBUG RAW VERIFIED RESULTS:", state["verified_results"])  # 👈 DEBUG
     verified_tasks = state["verified_results"].get("verified_results") or []
     verified_sources = []
     conflicts = []
@@ -190,6 +193,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
 
     # ── Analysis ─────────────────────────────────────────────
     state = analysis_node(state)
+    print("DEBUG RAW ANALYSIS RESULTS:", state["analysis_results"])  # 👈 DEBUG
     analysis_tasks = state["analysis_results"].get("analysis_results") or []
     insights, trends, risks, opportunities, recommendations_analysis = [], [], [], [], []
     for task in analysis_tasks:
