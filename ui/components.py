@@ -1175,8 +1175,8 @@ def render_sidebar(active_label: str):
         _md(
             """
             <div class="if-sidebar-brand">
-                <div class="if-sidebar-brand-mark">IF</div>
-                <div class="if-sidebar-brand-name">Insight<span class="accent">Forge</span></div>
+                <div class="if-sidebar-brand-mark">AH</div>
+                <div class="if-sidebar-brand-name">Agent<span class="accent">Hive</span></div>
             </div>
             """
         )
@@ -1210,7 +1210,7 @@ def render_sidebar(active_label: str):
                     st.switch_page("pages/3_Final_Report.py")
 
         _md(
-            '<div class="if-sidebar-footer">InsightForge<br>LangGraph · ChromaDB RAG</div>'
+            '<div class="if-sidebar-footer">AgentHive<br>LangGraph · ChromaDB RAG</div>'
         )
 
 
@@ -1254,7 +1254,7 @@ def render_header():
             </svg>
             <div class="if-header-content">
                 <div class="if-eyebrow"><span class="dot"></span>Multi-Agent Research Intelligence Platform</div>
-                <div class="if-title">Insight<span class="accent">Forge</span></div>
+                <div class="if-title">Agent<span class="accent">Hive</span></div>
                 <p class="if-sub">
                     Upload a document and six agents plan, retrieve, verify, analyze,
                     write, and critique — producing a structured analysis with a
@@ -1525,4 +1525,4 @@ def render_swot(strengths: list[str], weaknesses: list[str]):
 
 
 def render_footer():
-    _md('<div class="if-footer">InsightForge · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
+    _md('<div class="if-footer">AgentHive · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')

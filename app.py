@@ -149,7 +149,7 @@
 
 
 # # ── Page setup ────────────────────────────────────────────────────────────
-# st.set_page_config(page_title="InsightForge · Research Intelligence", page_icon="◆", layout="wide")
+# st.set_page_config(page_title="AgentHive · Home", page_icon="◆", layout="wide")
 # inject_css()
 # render_header()
 
@@ -394,7 +394,7 @@
 
 
 # # ── Page setup ────────────────────────────────────────────────────────────
-# st.set_page_config(page_title="InsightForge · Research Intelligence", page_icon="◆", layout="wide")
+#st.set_page_config(page_title="AgentHive · Home", page_icon="◆", layout="wide")
 # inject_css()
 # render_header()
 
@@ -574,7 +574,7 @@ from ui.components import inject_css, render_header, render_sidebar
 from ui.document_reader import extract_text
 from tools.scraper import scrape_url
 
-st.set_page_config(page_title="InsightForge · Home", page_icon="◆", layout="wide")
+st.set_page_config(page_title="AgentHive · Home", page_icon="◆", layout="wide")
 inject_css()
 render_sidebar("Home")
 render_header()
