@@ -3,7 +3,7 @@
 # # --- STEP 1: GLOBAL VIEWPORT SETUP ---
 # # Pure framework stack execution ke pehle page layout configure karna zaroori hai.
 # st.set_page_config(
-#     page_title="InsightForge AI",
+#     page_title="AgentHive AI",
 #     page_icon="🚀",
 #     layout="wide"
 # )
@@ -33,7 +33,7 @@
 
 
 # """
-# InsightForge — Multi-Agent Research Intelligence Platform
+# AgentHive — Multi-Agent Research Intelligence Platform
 # Frontend entrypoint.
 #
 # INTEGRATION CONTRACT for whoever wires up graph/workflow.py:
@@ -152,6 +152,8 @@
 # st.set_page_config(page_title="AgentHive · Home", page_icon="◆", layout="wide")
 # inject_css()
 # render_header()
+# inject_css()
+# render_header()
 
 # # ── Session state ────────────────────────────────────────────────────────
 # for key, default in (("results", {}), ("running", False), ("start_time", None), ("elapsed", None)):
@@ -243,7 +245,7 @@
 #             st.download_button(
 #                 "⬇ Download report (.md)",
 #                 data=r["writer"]["report_markdown"],
-#                 file_name=f"insightforge_report_{int(time.time())}.md",
+#                 file_name=f"AgentHive_report_{int(time.time())}.md",
 #                 mime="text/markdown",
 #             )
 
@@ -277,7 +279,7 @@
 
 
 # """
-# InsightForge — Multi-Agent Research Intelligence Platform
+# AgentHive — Multi-Agent Research Intelligence Platform
 # Frontend entrypoint.
 #
 # INTEGRATION CONTRACT for whoever wires up graph/workflow.py:
@@ -394,7 +396,11 @@
 
 
 # # ── Page setup ────────────────────────────────────────────────────────────
+<<<<<<< HEAD
 #st.set_page_config(page_title="AgentHive · Home", page_icon="◆", layout="wide")
+=======
+# st.set_page_config(page_title="AgentHive · Research Intelligence", page_icon="◆", layout="wide")
+>>>>>>> temp-fix
 # inject_css()
 # render_header()
 
@@ -502,7 +508,7 @@
 #             st.download_button(
 #                 "⬇ Download report (.md)",
 #                 data=r["writer"]["report_markdown"],
-#                 file_name=f"insightforge_report_{int(time.time())}.md",
+#                 file_name=f"AgentHive_report_{int(time.time())}.md",
 #                 mime="text/markdown",
 #             )
 
@@ -533,9 +539,8 @@
 #             st.info("Critic review will appear once the Critic Agent completes.")
 
 # render_footer()
-
 """
-InsightForge — Home / Upload Document
+AgentHive — Home / Upload Document
 Frontend entrypoint (root page of the multi-page app).
 
 INTEGRATION CONTRACT for whoever wires up graph/workflow.py:
@@ -563,9 +568,16 @@ INTEGRATION CONTRACT for whoever wires up graph/workflow.py:
         yield "critic", {"score": float, "feedback": str}
 
 This file only handles document intake. The pipeline itself runs on
-the Agent Monitor page (pages/1_🧭_Agent_Monitor.py) — that way
+the Agent Monitor page (pages/1_Agent_Monitor.py) — that way
 switching pages mid-run never loses progress, since results live in
 st.session_state, which persists across pages in the same session.
+
+NOTE: the page path used below in st.switch_page() must exactly match
+the actual filename under pages/. It's "pages/1_Agent_Monitor.py" here
+(no emoji in the filename) — same as NAV_PAGES in ui/components.py.
+If your pages/ file is actually named with an emoji prefix (e.g.
+"1_🧭_Agent_Monitor.py"), st.switch_page() will silently fail to find
+the page — rename the file or update this string so they match.
 """
 
 import streamlit as st
@@ -578,6 +590,8 @@ st.set_page_config(page_title="AgentHive · Home", page_icon="◆", layout="wide
 inject_css()
 render_sidebar("Home")
 render_header()
+
+MAX_WORDS = 5000  # ← change this number to set a different word limit
 
 col_main, col_side = st.columns([2.2, 1])
 
@@ -592,6 +606,13 @@ with col_main:
             "Pasted text", height=160, label_visibility="collapsed",
             placeholder="Paste the document's text here…",
         )
+        # Live word counter + warning if over the limit
+        if pasted_text.strip():
+            word_count = len(pasted_text.split())
+            if word_count > MAX_WORDS:
+                st.warning(f"⚠ {word_count} words — please keep it under {MAX_WORDS} words.")
+            else:
+                st.caption(f"{word_count} / {MAX_WORDS} words")
     with st.expander("Or paste a URL instead"):
         url_input = st.text_input(
             "URL", placeholder="https://example.com/article",
@@ -624,8 +645,14 @@ if analyze_clicked:
             st.error(f"Couldn't fetch that URL: {result.get('error', 'No content found')}")
 
     if not document_text.strip() and pasted_text.strip():
+        # Enforce the word limit before accepting pasted text
+        word_count = len(pasted_text.split())
+        if word_count > MAX_WORDS:
+            st.error(f"Pasted text is too long ({word_count} words). Please keep it under {MAX_WORDS} words.")
+            st.stop()
+
         document_text = pasted_text.strip()
-        # FIX: give pasted text a document-like title (first line/words)
+        # Give pasted text a document-like title (first line/words)
         # instead of the generic "Pasted text" label, so it reads the
         # same way an uploaded file or scraped URL title would —
         # regardless of source, the app always feels like it's

@@ -19,7 +19,7 @@ from ui.components import (
     render_verification,
 )
 
-st.set_page_config(page_title="InsightForge · Analysis Dashboard", page_icon="◆", layout="wide")
+st.set_page_config(page_title="AgentHive · Analysis Dashboard", page_icon="◆", layout="wide")
 inject_css()
 render_sidebar("Analysis Dashboard")
 render_page_header(

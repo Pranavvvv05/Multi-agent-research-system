@@ -1,5 +1,5 @@
 /* =============================================================
-   InsightForge — Design Tokens
+   AgentHive — Design Tokens
    Signature: agents are rendered as a "signal chain" — a research
    instrument reading, not a checklist. Verification/trust is the
    thing this project does that the reference project doesn't, so
@@ -720,7 +720,7 @@ details summary {
     box-shadow: 0 0 8px #e8b059 !important;
 }
 
-/* 2. InsightForge ka gradient */
+/* 2. AgentHive ka gradient */
 .if-sidebar-brand-name .accent, .if-title .accent {
     background: linear-gradient(135deg, #f3c77c, #cc8421) !important;
     -webkit-background-clip: text !important;
