@@ -27,7 +27,7 @@ model = ChatMistralAI(
     api_key=os.getenv("MISTRAL_API_KEY"),
     timeout=180,
     max_retries=2,
-    max_tokens=3000,
+    max_tokens=4000,
 )
 
 planner = PlannerAgent(model)
