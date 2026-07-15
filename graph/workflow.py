@@ -27,7 +27,7 @@ model = ChatMistralAI(
     api_key=os.getenv("MISTRAL_API_KEY"),
     timeout=180,
     max_retries=2,
-    max_tokens=1500,  # caps response length -> also helps latency
+    max_tokens=3000,
 )
 
 planner = PlannerAgent(model)
@@ -94,8 +94,6 @@ def writer_node(state: ResearchState) -> ResearchState:
     state["sources"] = extract_sources(state["verified_results"])
     raw_report = writer_agent.write_report(state["analysis_results"], state["sources"])
     sources_section = build_sources_markdown(state["sources"])
-    # Append our own generated Sources section instead of relying on the LLM
-    # to write clickable, ordered links itself.
     state["report"] = f"{raw_report}\n{sources_section}"
     return state
 
@@ -156,8 +154,6 @@ def run_pipeline(document_text: str, use_rag: bool = True):
             })
     yield "research", {"sources": raw_sources}
 
-    state = research_node(state)
-
     # ── Verification ─────────────────────────────────────────
     state = verification_node(state)
     verified_tasks = state["verified_results"].get("verified_results") or []
@@ -166,7 +162,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     quality_to_score = {"high": 90, "medium": 65, "low": 30}
 
     total_sources = 0
-    relevant_sources = 0  # high or medium quality counts as "relevant"
+    relevant_sources = 0
 
     for task in verified_tasks:
         for vs in task.get("verified_sources", []):
@@ -191,8 +187,6 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "source_relevance": source_relevance,
         "relevance_score": source_relevance,
     }
-
-    state = verification_node(state)
 
     # ── Analysis ─────────────────────────────────────────────
     state = analysis_node(state)
@@ -225,12 +219,4 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "recommendations": recommendations_analysis,
     }
 
-    # ── Critic ───────────────────────────────────────────────
-    state = critic_node(state)
-    c = state["critic_review"]
-    yield "critic", {
-        "score": c.get("overall_score", 0),
-        "feedback": "; ".join(c.get("issues", [])) or c.get("review_status", ""),
-        "strengths": c.get("strengths", []),
-        "improvements": c.get("improvement_suggestions", []),
-    }
+    # ── Critic ──────────────────────────────

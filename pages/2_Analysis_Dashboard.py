@@ -46,23 +46,24 @@ render_metrics({
     "sources": len(verified) or len(results.get("research", {}).get("sources", [])) or None,
 })
 
-if verified:
-    st.markdown('<div class="if-card-label" style="margin-top:0.5rem;">Trust Score by Source</div>', unsafe_allow_html=True)
-    chart_data = {s.get("title", f"Source {i+1}")[:28]: s.get("trust_score", 0) for i, s in enumerate(verified)}
-    try:
-        import plotly.graph_objects as go
-
-        fig = go.Figure(go.Bar(
-            x=list(chart_data.values()), y=list(chart_data.keys()), orientation="h",
-            marker_color=["#0d9488" if v >= 70 else "#dc2626" for v in chart_data.values()],
-        ))
-        fig.update_layout(
-            height=max(220, 42 * len(chart_data)), margin=dict(l=0, r=10, t=10, b=10),
-            xaxis=dict(range=[0, 100], title="Trust score"), plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    except ImportError:
-        st.bar_chart(chart_data)
+# ── TEMPORARILY DISABLED FOR TESTING — chart may be overlapping links ──
+# if verified:
+#     st.markdown('<div class="if-card-label" style="margin-top:0.5rem;">Trust Score by Source</div>', unsafe_allow_html=True)
+#     chart_data = {s.get("title", f"Source {i+1}")[:28]: s.get("trust_score", 0) for i, s in enumerate(verified)}
+#     try:
+#         import plotly.graph_objects as go
+#
+#         fig = go.Figure(go.Bar(
+#             x=list(chart_data.values()), y=list(chart_data.keys()), orientation="h",
+#             marker_color=["#0d9488" if v >= 70 else "#dc2626" for v in chart_data.values()],
+#         ))
+#         fig.update_layout(
+#             height=max(220, 42 * len(chart_data)), margin=dict(l=0, r=10, t=10, b=10),
+#             xaxis=dict(range=[0, 100], title="Trust score"), plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+#         )
+#         st.plotly_chart(fig, use_container_width=True)
+#     except ImportError:
+#         st.bar_chart(chart_data)
 
 col_left, col_right = st.columns(2)
 with col_left:

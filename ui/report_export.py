@@ -31,7 +31,6 @@ SECTIONS = [
     ("Recommendations", "recommendations"),
 ]
 
-
 def generate_docx(report: dict) -> bytes:
     from docx import Document
 
