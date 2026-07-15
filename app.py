@@ -393,14 +393,6 @@
 #         "strengths": ["Clear structure", "Sources are cited"],
 #         "improvements": ["Add more quantitative detail", "Expand the risk section"],
 #     }
-
-
-# # ── Page setup ────────────────────────────────────────────────────────────
-<<<<<<< HEAD
-#st.set_page_config(page_title="AgentHive · Home", page_icon="◆", layout="wide")
-=======
-# st.set_page_config(page_title="AgentHive · Research Intelligence", page_icon="◆", layout="wide")
->>>>>>> temp-fix
 # inject_css()
 # render_header()
 
