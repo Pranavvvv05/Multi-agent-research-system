@@ -219,4 +219,12 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "recommendations": recommendations_analysis,
     }
 
-    # ── Critic ──────────────────────────────
+    # ── Critic ───────────────────────────────────────────────
+    state = critic_node(state)
+    c = state["critic_review"]
+    yield "critic", {
+        "score": c.get("overall_score", 0),
+        "feedback": "; ".join(c.get("issues", [])) or c.get("review_status", ""),
+        "strengths": c.get("strengths", []),
+        "improvements": c.get("improvement_suggestions", []),
+    }
