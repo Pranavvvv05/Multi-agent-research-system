@@ -82,7 +82,7 @@ def _demo_run_pipeline(document_text: str, use_rag: bool):
     yield "critic", {"score": 7.8, "feedback": "Demo critic feedback — replace with the real Critic Agent's review."}
 
 
-st.set_page_config(page_title="InsightForge · Agent Monitor", page_icon="◆", layout="wide")
+st.set_page_config(page_title="AgentHive · Agent Monitor", page_icon="◆", layout="wide")
 inject_css()
 render_sidebar("Agent Monitor")
 render_page_header(

@@ -261,7 +261,7 @@
 
 
 # def render_footer():
-#     _md('<div class="if-footer">InsightForge · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
+#     _md('<div class="if-footer">AgentHive · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
 
 
 
@@ -541,7 +541,7 @@
 
 
 # def render_footer():
-#     _md('<div class="if-footer">InsightForge · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
+#     _md('<div class="if-footer">AgentHive · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
 
 
 # """
@@ -807,7 +807,7 @@
 
 
 # def render_footer():
-#     _md('<div class="if-footer">InsightForge · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
+#     _md('<div class="if-footer">AgentHive · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
 
 
 
@@ -1087,7 +1087,7 @@
 
 
 # def render_footer():
-#     _md('<div class="if-footer">InsightForge · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
+#     _md('<div class="if-footer">AgentHive · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
 
 
 """
@@ -1176,7 +1176,7 @@ def render_sidebar(active_label: str):
         _md(
             """
             <div class="if-sidebar-brand">
-                <div class="if-sidebar-brand-mark">IF</div>
+                <div class="if-sidebar-brand-mark">AH</div>
                 <div class="if-sidebar-brand-name">Insight<span class="accent">Forge</span></div>
             </div>
             """
@@ -1211,7 +1211,7 @@ def render_sidebar(active_label: str):
                     st.switch_page("pages/3_Final_Report.py")
 
         _md(
-            '<div class="if-sidebar-footer">InsightForge<br>LangGraph · ChromaDB RAG</div>'
+            '<div class="if-sidebar-footer">AgentHive<br>LangGraph · ChromaDB RAG</div>'
         )
 
 
@@ -1522,4 +1522,4 @@ def render_swot(strengths: list[str], weaknesses: list[str]):
 
 
 def render_footer():
-    _md('<div class="if-footer">InsightForge · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')
+    _md('<div class="if-footer">AgentHive · LangGraph multi-agent pipeline · ChromaDB RAG · Streamlit</div>')

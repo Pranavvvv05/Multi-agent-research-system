@@ -18,7 +18,7 @@ from ui.components import (
 )
 from ui.report_export import generate_docx, generate_pdf
 
-st.set_page_config(page_title="InsightForge · Final Report", page_icon="◆", layout="wide")
+st.set_page_config(page_title="AgentHive · Final Report", page_icon="◆", layout="wide")
 inject_css()
 render_sidebar("Final Report")
 
