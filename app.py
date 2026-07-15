@@ -533,7 +533,6 @@
 #             st.info("Critic review will appear once the Critic Agent completes.")
 
 # render_footer()
-
 """
 AgentHive — Home / Upload Document
 Frontend entrypoint (root page of the multi-page app).
@@ -563,9 +562,16 @@ INTEGRATION CONTRACT for whoever wires up graph/workflow.py:
         yield "critic", {"score": float, "feedback": str}
 
 This file only handles document intake. The pipeline itself runs on
-the Agent Monitor page (pages/1_🧭_Agent_Monitor.py) — that way
+the Agent Monitor page (pages/1_Agent_Monitor.py) — that way
 switching pages mid-run never loses progress, since results live in
 st.session_state, which persists across pages in the same session.
+
+NOTE: the page path used below in st.switch_page() must exactly match
+the actual filename under pages/. It's "pages/1_Agent_Monitor.py" here
+(no emoji in the filename) — same as NAV_PAGES in ui/components.py.
+If your pages/ file is actually named with an emoji prefix (e.g.
+"1_🧭_Agent_Monitor.py"), st.switch_page() will silently fail to find
+the page — rename the file or update this string so they match.
 """
 
 import streamlit as st
@@ -625,7 +631,7 @@ if analyze_clicked:
 
     if not document_text.strip() and pasted_text.strip():
         document_text = pasted_text.strip()
-        # FIX: give pasted text a document-like title (first line/words)
+        # Give pasted text a document-like title (first line/words)
         # instead of the generic "Pasted text" label, so it reads the
         # same way an uploaded file or scraped URL title would —
         # regardless of source, the app always feels like it's
