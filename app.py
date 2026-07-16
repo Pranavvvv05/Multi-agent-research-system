@@ -663,10 +663,23 @@ if analyze_clicked:
 
 st.markdown(
     """
-    <div class="if-welcome-popup">
+    <div class="if-welcome-popup" id="if-welcome-popup">
         <h2>Uncover. Analyze. Deliver.</h2>
         <p>Intelligence that drives confident decisions. All research agents are online and ready.</p>
     </div>
+    <style>
+        #if-welcome-popup {
+            animation: premiumBottomRightPopIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) both,
+                       if-welcome-fadeout 0.6s ease forwards 4s;
+        }
+        @keyframes if-welcome-fadeout {
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+                pointer-events: none;
+            }
+        }
+    </style>
     """,
     unsafe_allow_html=True
 )
