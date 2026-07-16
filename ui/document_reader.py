@@ -25,8 +25,26 @@ def extract_text(uploaded_file) -> str:
             from pypdf import PdfReader
         except ImportError as e:
             raise RuntimeError("Install pypdf to read PDF files: pip install pypdf") from e
+
         reader = PdfReader(io.BytesIO(data))
-        return "\n".join(page.extract_text() or "" for page in reader.pages)
+        text = "\n".join(page.extract_text() or "" for page in reader.pages)
+
+        # ── DEBUG: confirm whether extraction actually got real text ──
+        print(f"DEBUG: PDF '{uploaded_file.name}' — {len(reader.pages)} page(s), "
+              f"{len(text)} char(s) extracted.")
+        print("DEBUG: PDF TEXT SAMPLE (first 300 chars):", repr(text[:300]))
+
+        if len(text.strip()) < 20:
+            # Almost nothing came out — very likely a scanned/image-only
+            # PDF with no embedded text layer, which pypdf can't read.
+            print(
+                "DEBUG WARNING: Extracted text is nearly empty. This PDF is "
+                "likely scanned/image-based and has no selectable text layer — "
+                "pypdf cannot OCR it. An OCR step (e.g. pytesseract) would be "
+                "needed to handle this file."
+            )
+
+        return text
 
     if name.endswith(".docx"):
         try:
