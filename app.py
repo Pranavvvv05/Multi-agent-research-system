@@ -669,15 +669,14 @@ st.markdown(
     </div>
     <style>
         #if-welcome-popup {
-            animation: premiumBottomRightPopIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) both,
-                       if-welcome-fadeout 0.6s ease forwards 4s;
-        }
-        @keyframes if-welcome-fadeout {
-            to {
-                opacity: 0;
-                transform: translateY(20px);
-                pointer-events: none;
-            }
+            position: static !important;
+            bottom: auto !important;
+            right: auto !important;
+            left: auto !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            margin-top: 2rem !important;
+            z-index: 1 !important;
         }
     </style>
     """,
