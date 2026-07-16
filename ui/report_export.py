@@ -7,6 +7,8 @@ work in any deployment (no LibreOffice/pandoc system dependency needed).
 
 Requires: python-docx, reportlab (add to requirements.txt if not present).
 
+    pip install reportlab python-docx
+
 Expected `report` dict shape (same as the "writer" pipeline payload,
 plus a "title"):
     {
@@ -32,27 +34,106 @@ SECTIONS = [
     ("Recommendations", "recommendations"),
 ]
 
+# Matches markdown links: [display text](https://url)
+_LINK_RE = re.compile(r"\[([^\]]+)\]\((https?://[^\s)]+)\)")
+
 
 # ── Shared markdown parsing helpers ─────────────────────────────────
 
-def _split_bold(text: str):
-    """Splits text on **bold** markers, returning (chunk, is_bold) pairs."""
+def _split_inline(text: str):
+    """
+    Splits text into ordered chunks of (text, is_bold, link_url_or_None).
+    Handles **bold** and [label](url) markdown as separate inline spans,
+    which covers real-world Writer/Critic output.
+    """
+    result = []
+
+    pos = 0
+    for m in _LINK_RE.finditer(text):
+        before = text[pos:m.start()]
+        if before:
+            result.extend(_split_bold_only(before))
+        result.append((m.group(1), False, m.group(2)))
+        pos = m.end()
+    remainder = text[pos:]
+    if remainder:
+        result.extend(_split_bold_only(remainder))
+
+    return result
+
+
+def _split_bold_only(text: str):
+    """Splits text on **bold** markers, returning (chunk, is_bold, None) triples."""
     parts = re.split(r"(\*\*.*?\*\*)", text)
     result = []
     for part in parts:
         if not part:
             continue
         if part.startswith("**") and part.endswith("**"):
-            result.append((part[2:-2], True))
+            result.append((part[2:-2], True, None))
         else:
-            result.append((part, False))
+            result.append((part, False, None))
     return result
+
+
+# ── DOCX hyperlink helper ────────────────────────────────────────────
+
+def _add_docx_hyperlink(paragraph, url: str, text: str, bold: bool = False):
+    """
+    python-docx has no built-in hyperlink support, so this builds the
+    required run XML manually and inserts it as a real clickable,
+    correctly-styled (blue + underlined) hyperlink — not just blue text.
+    """
+    from docx.oxml.shared import OxmlElement, qn
+
+    part = paragraph.part
+    r_id = part.relate_to(
+        url,
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+        is_external=True,
+    )
+
+    hyperlink = OxmlElement("w:hyperlink")
+    hyperlink.set(qn("r:id"), r_id)
+
+    run = OxmlElement("w:r")
+    rPr = OxmlElement("w:rPr")
+
+    color = OxmlElement("w:color")
+    color.set(qn("w:val"), "0563C1")
+    rPr.append(color)
+
+    underline = OxmlElement("w:u")
+    underline.set(qn("w:val"), "single")
+    rPr.append(underline)
+
+    if bold:
+        b = OxmlElement("w:b")
+        rPr.append(b)
+
+    run.append(rPr)
+    text_el = OxmlElement("w:t")
+    text_el.text = text
+    run.append(text_el)
+    hyperlink.append(run)
+
+    paragraph._p.append(hyperlink)
+
+
+def _add_docx_inline_runs(paragraph, text: str):
+    """Adds bold runs and real clickable hyperlinks to a docx paragraph."""
+    for chunk, is_bold, link_url in _split_inline(text):
+        if link_url:
+            _add_docx_hyperlink(paragraph, link_url, chunk, bold=is_bold)
+        else:
+            run = paragraph.add_run(chunk)
+            run.bold = is_bold
 
 
 def _add_docx_markdown(doc, text: str):
     """Parses a markdown string and appends proper Word elements
-    (headings, bold runs, bullet/numbered lists) instead of dumping
-    raw '#'/'-' characters into one plain paragraph."""
+    (headings, bold runs, links, bullet/numbered lists) instead of
+    dumping raw '#'/'-'/'[]()' characters into one plain paragraph."""
     if not text:
         return
 
@@ -65,6 +146,7 @@ def _add_docx_markdown(doc, text: str):
         if heading_match:
             level = min(len(heading_match.group(1)) + 1, 4)  # keep below title (level 0)
             heading_text = re.sub(r"\*\*(.*?)\*\*", r"\1", heading_match.group(2)).strip()
+            heading_text = _LINK_RE.sub(r"\1", heading_text)
             doc.add_heading(heading_text, level=level)
             continue
 
@@ -81,9 +163,31 @@ def _add_docx_markdown(doc, text: str):
             p = doc.add_paragraph()
             item_text = line
 
-        for chunk, is_bold in _split_bold(item_text):
-            run = p.add_run(chunk)
-            run.bold = is_bold
+        _add_docx_inline_runs(p, item_text)
+
+
+# ── PDF markdown/link helpers ────────────────────────────────────────
+
+def _to_reportlab_markup(text: str) -> str:
+    """
+    Converts **bold** and [label](url) markdown into reportlab's mini
+    XML markup (<b>, <link href="...">), escaping everything else so
+    stray '<', '>', '&' in source text don't break the PDF renderer.
+    """
+    out = []
+    pos = 0
+    for m in _LINK_RE.finditer(text):
+        before = text[pos:m.start()]
+        if before:
+            out.append(re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", escape(before)))
+        label = escape(m.group(1))
+        url = escape(m.group(2))
+        out.append(f'<link href="{url}" color="blue"><u>{label}</u></link>')
+        pos = m.end()
+    remainder = text[pos:]
+    if remainder:
+        out.append(re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", escape(remainder)))
+    return "".join(out)
 
 
 def _markdown_to_pdf_flowables(text: str, styles):
@@ -112,10 +216,6 @@ def _markdown_to_pdf_flowables(text: str, styles):
             flowables.append(Spacer(1, 8))
             number_buffer.clear()
 
-    def to_reportlab_bold(t: str) -> str:
-        # reportlab's Paragraph understands basic <b> tags
-        return re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", escape(t).replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>"))
-
     heading_styles = {1: "Heading1", 2: "Heading2", 3: "Heading3", 4: "Heading4"}
 
     for raw_line in text.split("\n"):
@@ -129,6 +229,7 @@ def _markdown_to_pdf_flowables(text: str, styles):
             flush_numbers()
             level = min(len(heading_match.group(1)), 4)
             heading_text = re.sub(r"\*\*(.*?)\*\*", r"\1", heading_match.group(2)).strip()
+            heading_text = _LINK_RE.sub(r"\1", heading_text)
             flowables.append(Paragraph(escape(heading_text), styles[heading_styles[level]]))
             flowables.append(Spacer(1, 6))
             continue
@@ -138,16 +239,16 @@ def _markdown_to_pdf_flowables(text: str, styles):
 
         if bullet_match:
             flush_numbers()
-            bullet_buffer.append(to_reportlab_bold(bullet_match.group(1).strip()))
+            bullet_buffer.append(_to_reportlab_markup(bullet_match.group(1).strip()))
             continue
         if numbered_match:
             flush_bullets()
-            number_buffer.append(to_reportlab_bold(numbered_match.group(1).strip()))
+            number_buffer.append(_to_reportlab_markup(numbered_match.group(1).strip()))
             continue
 
         flush_bullets()
         flush_numbers()
-        flowables.append(Paragraph(to_reportlab_bold(line), styles["Normal"]))
+        flowables.append(Paragraph(_to_reportlab_markup(line), styles["Normal"]))
         flowables.append(Spacer(1, 4))
 
     flush_bullets()
@@ -173,9 +274,7 @@ def generate_docx(report: dict) -> bytes:
         doc.add_heading(heading, level=1)
         for item in items:
             p = doc.add_paragraph(style="List Bullet")
-            for chunk, is_bold in _split_bold(item):
-                run = p.add_run(chunk)
-                run.bold = is_bold
+            _add_docx_inline_runs(p, item)
 
     buf = BytesIO()
     doc.save(buf)
@@ -206,7 +305,7 @@ def generate_pdf(report: dict) -> bytes:
         if not items:
             continue
         story.append(Paragraph(heading, styles["Heading1"]))
-        bullets = [ListItem(Paragraph(escape(item), styles["Normal"])) for item in items]
+        bullets = [ListItem(Paragraph(_to_reportlab_markup(item), styles["Normal"])) for item in items]
         story.append(ListFlowable(bullets, bulletType="bullet"))
         story.append(Spacer(1, 12))
 
