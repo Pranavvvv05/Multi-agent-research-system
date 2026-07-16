@@ -598,7 +598,6 @@ with col_main:
             "Pasted text", height=160, label_visibility="collapsed",
             placeholder="Paste the document's text here…",
         )
-        # Live word counter + warning if over the limit
         if pasted_text.strip():
             word_count = len(pasted_text.split())
             if word_count > MAX_WORDS:
@@ -633,22 +632,22 @@ if analyze_clicked:
         if result["success"] and result["content"]:
             document_text = result["content"]
             document_name = result["title"] or url_input.strip()
+        elif result.get("blocked"):
+            st.error(
+                "This website blocks automated access (common for large sites like "
+                "Tesla, Amazon, LinkedIn). Try a different URL, or use "
+                "'Or paste text instead' to paste the content directly."
+            )
         else:
             st.error(f"Couldn't fetch that URL: {result.get('error', 'No content found')}")
 
     if not document_text.strip() and pasted_text.strip():
-        # Enforce the word limit before accepting pasted text
         word_count = len(pasted_text.split())
         if word_count > MAX_WORDS:
             st.error(f"Pasted text is too long ({word_count} words). Please keep it under {MAX_WORDS} words.")
             st.stop()
 
         document_text = pasted_text.strip()
-        # Give pasted text a document-like title (first line/words)
-        # instead of the generic "Pasted text" label, so it reads the
-        # same way an uploaded file or scraped URL title would —
-        # regardless of source, the app always feels like it's
-        # analyzing "a document".
         first_line = pasted_text.strip().split("\n", 1)[0][:60].rsplit(" ", 1)[0]
         document_name = first_line or "Pasted Document"
 

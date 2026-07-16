@@ -322,3 +322,497 @@
     }
   ]
 }
+
+=== PLAN ===
+{
+  "goal": "Research the concept of Agentic AI, its core technologies, applications, risks, economic impact, future outlook, and common misconceptions to provide a comprehensive understanding of the topic.",
+  "tasks": [
+    "Define Agentic AI and differentiate it from traditional AI systems, including its key characteristics and capabilities.",
+    "Explain the core technologies enabling Agentic AI, such as large language models, reinforcement learning, tool use, memory systems, planning algorithms, and autonomy mechanisms.",
+    "Provide an overview of the architecture of AI agents, including their decision-making processes, goal orientation, and interaction protocols.",
+    "Identify and describe the primary interaction modalities of Agentic AI (e.g., natural language, APIs, multimodal inputs) and their implications for user experience.",
+    "Analyze current trends in Agentic AI adoption across industries, including healthcare, finance, manufacturing, customer service, and software development.",
+    "Compile sector-specific use cases and case studies of Agentic AI applications, highlighting measurable outcomes and limitations.",
+    "Assess the benefits and opportunities of Agentic AI, including efficiency gains, automation capabilities, cost reduction, innovation acceleration, and personalization.",
+    "Evaluate the risks and challenges associated with Agentic AI, such as ethical concerns (bias, transparency), safety risks (unintended behaviors, loss of control), security vulnerabilities, economic disruption, and regulatory challenges.",
+    "Examine the ethical and societal implications of Agentic AI, including job displacement, accountability frameworks, and alignment with human values.",
+    "Compare Agentic AI with other AI paradigms (e.g., generative AI, autonomous systems, multi-agent systems) in terms of functionality, scalability, and adaptability.",
+    "Investigate the economic impact of Agentic AI, including productivity gains, GDP contributions, industry transformation, and labor market shifts.",
+    "Explore the future outlook of Agentic AI, including predicted advancements in autonomy, collaboration between agents, integration with other technologies (e.g., robotics, IoT), and long-term societal impacts.",
+    "Identify and dispel common misconceptions about Agentic AI, such as overestimating its current capabilities, underestimating its risks, or conflating it with general AI.",
+    "Research the skills and knowledge required for professionals to work effectively with Agentic AI, including technical competencies (e.g., prompt engineering, system design) and soft skills (e.g., ethical reasoning, collaboration).",
+    "Compile expert predictions and forecasts about the future role and capabilities of Agentic AI, including timelines for achieving advanced autonomy.",
+    "Identify limitations and failures of Agentic AI in real-world applications, including edge cases, failure modes, and scenarios where it underperforms.",
+    "Investigate the role of regulation and governance frameworks in shaping the development and deployment of Agentic AI, including existing policies and proposed guidelines."
+  ],
+  "information_categories": [
+    "Definitions and Background",
+    "Core Technologies",
+    "Agent Architecture and Decision-Making",
+    "Interaction Modalities",
+    "Industry Trends and Adoption",
+    "Sector-Specific Use Cases",
+    "Benefits and Opportunities",
+    "Risks and Challenges",
+    "Ethical and Societal Implications",
+    "Comparisons with Other AI Paradigms",
+    "Economic Impact and Labor Market Effects",
+    "Future Outlook and Predictions",
+    "Common Misconceptions",
+    "Skills and Upskilling Needs",
+    "Regulatory and Governance Frameworks",
+    "Limitations and Failures"
+  ]
+}
+
+=== RESEARCH_RESULTS ===
+{
+  "research_results": [
+    {
+      "task": "Define Agentic AI and differentiate it from traditional AI systems, including its key characteristics and capabilities.",
+      "findings": [
+        "Agentic AI represents a significant advancement over traditional AI by enabling autonomous systems to solve complex, multi-step problems through advanced reasoning and iterative planning.",
+        "Unlike traditional AI, which often relies on predefined rules or static models, agentic AI can adapt to changing situations and make context-aware decisions with minimal human intervention.",
+        "Agentic AI exhibits 'agency,' meaning it can independently execute tasks, analyze problems, develop strategies, and act based on preset goals rather than just generating content or following rigid instructions.",
+        "Traditional AI systems are typically rule-based or rely on static models, whereas agentic AI integrates dynamic memory, tool use, and real-time adaptation to achieve higher levels of autonomy.",
+        "Agentic AI differs from generative AI, which primarily creates content, by focusing on autonomous decision-making and task execution rather than content generation alone."
+      ],
+      "statistics": [],
+      "sources": [
+        "https://amnic.com/blogs/what-is-agentic-ai",
+        "https://www.linkedin.com/posts/goyalshalini_agentic-ai-vs-traditional-ai-what-sets-activity-7354397496724316161-be4F"
+      ],
+      "conflicting_information": []
+    },
+    {
+      "task": "Explain the core technologies enabling Agentic AI, such as large language models, reinforcement learning, tool use, memory systems, planning algorithms, and autonomy mechanisms.",
+      "findings": [
+        "Large language models (LLMs) serve as the foundational models for agentic AI, enabling natural language understanding, reasoning, and interaction with external tools.",
+        "Reinforcement learning (RL) plays a key role in enabling agentic AI systems to learn from interactions and improve their decision-making over time through reward-based feedback.",
+        "Tool use in agentic AI refers to the ability of AI agents to interact with external systems, APIs, and databases to gather information or execute tasks autonomously.",
+        "Memory systems in agentic AI include short-term and long-term memory to retain context, learn from past interactions, and adapt strategies dynamically.",
+        "Planning algorithms, such as hierarchical task decomposition and Monte Carlo tree search, enable agentic AI to break down complex tasks into actionable steps and optimize decision-making.",
+        "Autonomy mechanisms involve self-governance, goal-setting, and adaptive behavior, allowing agentic AI to operate independently with minimal human oversight.",
+        "Multi-agent systems enable multiple AI agents to collaborate, share knowledge, and solve problems collectively, enhancing scalability and robustness."
+      ],
+      "statistics": [],
+      "sources": [
+        "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+        "https://www.researchgate.net/publication/397378545_A_Critical_Review_of_Agentic_AI_Core_Technologies_Applications_Ethical_Implications_and_Future_Research_Directions",
+        "https://orq.ai/blog/ai-agent-architecture",
+        "https://www.patronus.ai/ai-agent-development/ai-agent-architecture"
+      ],
+      "conflicting_information": []
+    },
+    {
+      "task": "Provide an overview of the architecture of AI agents, including their decision-making processes, goal orientation, and interaction protocols.",
+      "findings": [
+        "AI agent architecture is designed to support autonomous, goal-driven systems capable of adapting to dynamic inputs and making decisions with minimal human intervention.",
+        "LLM-based AI agents interpret user intent, reason through tasks, and interact with external tools to achieve predefined goals in real time.",
+        "Multi-agent systems enable collaboration among AI agents, allowing them to work together to solve complex problems and share knowledge.",
+        "Decision-making in AI agents involves iterative reasoning, context-aware adjustments, and tool integration to execute tasks efficiently.",
+        "Goal orientation in agentic AI is achieved through structured frameworks that define objectives, constraints, and success metrics for autonomous actions.",
+        "Interaction protocols include natural language interfaces, API integrations, and multimodal inputs to facilitate seamless user-agent communication.",
+        "Modern AI agent architectures leverage tools like LangChain and Orq.ai to streamline development, deployment, and scalability of agentic systems."
+      ],
+      "statistics": [],
+      "sources": [
+        "https://orq.ai/blog/ai-agent-architecture",
+        "https://www.patronus.ai/ai-agent-development/ai-agent-architecture"
+      ],
+      "conflicting_information": []
+    },
+    {
+      "task": "Identify and describe the primary interaction modalities of Agentic AI (e.g., natural language, APIs, multimodal inputs) and their implications for user experience.",
+      "findings": [
+        "Natural language is a primary interaction modality for agentic AI, enabling users to communicate with AI agents through conversational interfaces.",
+        "APIs serve as a critical interaction modality, allowing agentic AI to integrate with external systems, databases, and third-party services to execute tasks autonomously.",
+        "Multimodal inputs, including text, voice, and visual data, enhance the flexibility and robustness of agentic AI interactions by accommodating diverse user preferences.",
+        "User experience in agentic AI is improved through adaptive, context-aware interactions that reduce the need for manual input and streamline task execution.",
+        "The shift toward agentic AI requires UX designers to rethink traditional human-computer interaction paradigms, focusing on intuitive, autonomous, and goal-driven experiences.",
+        "AI agents that support multimodal interactions can better assist users in complex scenarios, such as customer service, healthcare, and logistics."
+      ],
+      "statistics": [],
+      "sources": [
+        "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+        "https://www.optimalworkshop.com/blog/agentic-ai-the-next-frontier"
+      ],
+      "conflicting_information": []
+    }
+  ]
+}
+
+=== VERIFIED_RESULTS ===
+{
+  "verified_results": [
+    {
+      "task": "Define Agentic AI and differentiate it from traditional AI systems, including its key characteristics and capabilities.",
+      "verified_sources": [
+        {
+          "source": "https://amnic.com/blogs/what-is-agentic-ai",
+          "source_quality": "medium"
+        },
+        {
+          "source": "https://www.linkedin.com/posts/goyalshalini_agentic-ai-vs-traditional-ai-what-sets-activity-7354397496724316161-be4F",
+          "source_quality": "low"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "Agentic AI represents a significant advancement over traditional AI by enabling autonomous systems to solve complex, multi-step problems through advanced reasoning and iterative planning.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "low",
+          "evidence_available": false,
+          "hallucination_risk": true,
+          "supporting_sources": [],
+          "notes": "No direct evidence or authoritative sources provided to support this claim. The claim appears to be a generalized statement without citation."
+        },
+        {
+          "claim": "Unlike traditional AI, which often relies on predefined rules or static models, agentic AI can adapt to changing situations and make context-aware decisions with minimal human intervention.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "low",
+          "evidence_available": false,
+          "hallucination_risk": true,
+          "supporting_sources": [],
+          "notes": "No direct evidence or authoritative sources provided to support this claim."
+        },
+        {
+          "claim": "Agentic AI exhibits 'agency,' meaning it can independently execute tasks, analyze problems, develop strategies, and act based on preset goals rather than just generating content or following rigid instructions.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "low",
+          "evidence_available": false,
+          "hallucination_risk": true,
+          "supporting_sources": [],
+          "notes": "No direct evidence or authoritative sources provided to support this claim."
+        },
+        {
+          "claim": "Traditional AI systems are typically rule-based or rely on static models, whereas agentic AI integrates dynamic memory, tool use, and real-time adaptation to achieve higher levels of autonomy.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "low",
+          "evidence_available": false,
+          "hallucination_risk": true,
+          "supporting_sources": [],
+          "notes": "No direct evidence or authoritative sources provided to support this claim."
+        },
+        {
+          "claim": "Agentic AI differs from generative AI, which primarily creates content, by focusing on autonomous decision-making and task execution rather than content generation alone.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "low",
+          "evidence_available": false,
+          "hallucination_risk": true,
+          "supporting_sources": [],
+          "notes": "No direct evidence or authoritative sources provided to support this claim."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.0
+    },
+    {
+      "task": "Explain the core technologies enabling Agentic AI, such as large language models, reinforcement learning, tool use, memory systems, planning algorithms, and autonomy mechanisms.",
+      "verified_sources": [
+        {
+          "source": "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+          "source_quality": "high"
+        },
+        {
+          "source": "https://www.researchgate.net/publication/397378545_A_Critical_Review_of_Agentic_AI_Core_Technologies_Applications_Ethical_Implications_and_Future_Research_Directions",
+          "source_quality": "medium"
+        },
+        {
+          "source": "https://orq.ai/blog/ai-agent-architecture",
+          "source_quality": "medium"
+        },
+        {
+          "source": "https://www.patronus.ai/ai-agent-development/ai-agent-architecture",
+          "source_quality": "medium"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "Large language models (LLMs) serve as the foundational models for agentic AI, enabling natural language understanding, reasoning, and interaction with external tools.",
+          "verification_status": "verified",
+          "confidence_score": 0.9,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review, a high-quality source."
+        },
+        {
+          "claim": "Reinforcement learning (RL) plays a key role in enabling agentic AI systems to learn from interactions and improve their decision-making over time through reward-based feedback.",
+          "verification_status": "verified",
+          "confidence_score": 0.9,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Tool use in agentic AI refers to the ability of AI agents to interact with external systems, APIs, and databases to gather information or execute tasks autonomously.",
+          "verification_status": "verified",
+          "confidence_score": 0.85,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Memory systems in agentic AI include short-term and long-term memory to retain context, learn from past interactions, and adapt strategies dynamically.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+            "https://www.researchgate.net/publication/397378545_A_Critical_Review_of_Agentic_AI_Core_Technologies_Applications_Ethical_Implications_and_Future_Research_Directions"
+          ],
+          "notes": "Supported by MIT Sloan Management Review and ResearchGate."
+        },
+        {
+          "claim": "Planning algorithms, such as hierarchical task decomposition and Monte Carlo tree search, enable agentic AI to break down complex tasks into actionable steps and optimize decision-making.",
+          "verification_status": "verified",
+          "confidence_score": 0.85,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Autonomy mechanisms involve self-governance, goal-setting, and adaptive behavior, allowing agentic AI to operate independently with minimal human oversight.",
+          "verification_status": "verified",
+          "confidence_score": 0.85,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Multi-agent systems enable multiple AI agents to collaborate, share knowledge, and solve problems collectively, enhancing scalability and robustness.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://www.researchgate.net/publication/397378545_A_Critical_Review_of_Agentic_AI_Core_Technologies_Applications_Ethical_Implications_and_Future_Research_Directions"
+          ],
+          "notes": "Supported by ResearchGate."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.85
+    },
+    {
+      "task": "Provide an overview of the architecture of AI agents, including their decision-making processes, goal orientation, and interaction protocols.",
+      "verified_sources": [
+        {
+          "source": "https://orq.ai/blog/ai-agent-architecture",
+          "source_quality": "medium"
+        },
+        {
+          "source": "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+          "source_quality": "high"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "AI agent architecture is designed to support autonomous, goal-driven systems capable of adapting to dynamic inputs and making decisions with minimal human intervention.",
+          "verification_status": "verified",
+          "confidence_score": 0.85,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "LLM-based AI agents interpret user intent, reason through tasks, and interact with external tools to achieve predefined goals in real time.",
+          "verification_status": "verified",
+          "confidence_score": 0.85,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Multi-agent systems enable collaboration among AI agents, allowing them to work together to solve complex problems and share knowledge.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "medium",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://www.patronus.ai/ai-agent-development/ai-agent-architecture"
+          ],
+          "notes": "Supported by Patronus AI."
+        },
+        {
+          "claim": "Decision-making in AI agents involves iterative reasoning, context-aware adjustments, and tool integration to execute tasks efficiently.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Goal orientation in agentic AI is achieved through structured frameworks that define objectives, constraints, and success metrics for autonomous actions.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Interaction protocols include natural language interfaces, API integrations, and multimodal inputs to facilitate seamless user-agent communication.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Modern AI agent architectures leverage tools like LangChain and Orq.ai to streamline development, deployment, and scalability of agentic systems.",
+          "verification_status": "verified",
+          "confidence_score": 0.75,
+          "source_quality": "medium",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://orq.ai/blog/ai-agent-architecture",
+            "https://www.patronus.ai/ai-agent-development/ai-agent-architecture"
+          ],
+          "notes": "Supported by Orq.ai and Patronus AI."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.81
+    },
+    {
+      "task": "Identify and describe the primary interaction modalities of Agentic AI (e.g., natural language, APIs, multimodal inputs) and their implications for user experience.",
+      "verified_sources": [
+        {
+          "source": "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+          "source_quality": "high"
+        },
+        {
+          "source": "https://www.optimalworkshop.com/blog/agentic-ai-the-next-frontier",
+          "source_quality": "medium"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "Natural language is a primary interaction modality for agentic AI, enabling users to communicate with AI agents through conversational interfaces.",
+          "verification_status": "verified",
+          "confidence_score": 0.95,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "APIs serve as a critical interaction modality, allowing agentic AI to integrate with external systems, databases, and third-party services to execute tasks autonomously.",
+          "verification_status": "verified",
+          "confidence_score": 0.9,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "Multimodal inputs, including text, voice, and visual data, enhance the flexibility and robustness of agentic AI interactions by accommodating diverse user preferences.",
+          "verification_status": "verified",
+          "confidence_score": 0.85,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mits Sloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+            "https://www.optimalworkshop.com/blog/agentic-ai-the-next-frontier"
+          ],
+          "notes": "Supported by MIT Sloan Management Review and Optimal Workshop."
+        },
+        {
+          "claim": "User experience in agentic AI is improved through adaptive, context-aware interactions that reduce the need for manual input and streamline task execution.",
+          "verification_status": "verified",
+          "confidence_score": 0.85,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mits Sloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "The shift toward agentic AI requires UX designers to rethink traditional human-computer interaction paradigms, focusing on intuitive, autonomous, and goal-driven experiences.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mits Sloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by MIT Sloan Management Review."
+        },
+        {
+          "claim": "AI agents that support multimodal interactions can better assist users in complex scenarios, such as customer service, healthcare, and logistics.",
+          "verification_status": "verified",
+          "confidence_score": 0.8,
+          "source_quality": "medium",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://www.optimalworkshop.com/blog/agentic-ai-the-next-frontier"
+          ],
+          "notes": "Supported by Optimal Workshop."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.86
+    }
+  ]
+}

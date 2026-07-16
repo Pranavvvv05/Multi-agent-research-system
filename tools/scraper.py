@@ -12,8 +12,19 @@ from bs4 import BeautifulSoup
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
-    )
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/126.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Referer": "https://www.google.com/",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
 }
 
 
@@ -27,34 +38,47 @@ def scrape_url(url: str, timeout: int = 10) -> dict:
             "title": str | None,
             "content": str | None,
             "success": bool,
-            "error": str | None   # only present if success is False
+            "error": str | None,       # only present if success is False
+            "blocked": bool            # True if the site returned 403/999
+                                        # (bot-protection), so the UI can
+                                        # show a clearer message than a
+                                        # raw HTTP error.
         }
     """
     try:
-        response = requests.get(url, headers=HEADERS, timeout=timeout)
+        session = requests.Session()
+        response = session.get(
+            url,
+            headers=HEADERS,
+            timeout=timeout,
+            allow_redirects=True,
+        )
         response.raise_for_status()
     except requests.RequestException as e:
+        status_code = getattr(e.response, "status_code", None)
+        blocked = status_code in (403, 999, 429)
         return {
             "url": url,
             "title": None,
             "content": None,
             "success": False,
             "error": str(e),
+            "blocked": blocked,
         }
 
     soup = BeautifulSoup(response.text, "html.parser")
 
     # Remove junk tags that aren't actual article content
-    for tag in soup(["script", "style", "nav", "header", "footer", "aside", "form"]):
+    for tag in soup(["script", "style", "nav", "header", "footer", "aside", "form", "noscript"]):
         tag.decompose()
 
     title = soup.title.string.strip() if soup.title and soup.title.string else "Untitled"
 
-    # Grab text from <p> tags first, fallback to full page text if empty
+    # Grab text from <p> tags first, fallback to full page text if empty/small
     paragraphs = soup.find_all("p")
-    text = "\n".join(p.get_text(strip=True) for p in paragraphs if p.get_text(strip=True))
+    text = "\n".join(p.get_text(" ", strip=True) for p in paragraphs if p.get_text(strip=True))
 
-    if not text:
+    if len(text.strip()) < 100:
         text = soup.get_text(separator="\n", strip=True)
 
     return {
@@ -62,6 +86,7 @@ def scrape_url(url: str, timeout: int = 10) -> dict:
         "title": title,
         "content": text,
         "success": True,
+        "blocked": False,
     }
 
 
