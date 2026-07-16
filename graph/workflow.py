@@ -1,4 +1,5 @@
 import os
+import json as _json
 from typing import TypedDict, List, Dict, Any
 
 from langgraph.graph import StateGraph, END
@@ -62,10 +63,6 @@ def analysis_node(state: ResearchState) -> ResearchState:
 
 
 def extract_sources(verified_results: Dict[str, Any]) -> List[Dict[str, str]]:
-    """
-    Returns a deduplicated, alphabetically sorted list of
-    {"title": ..., "url": ...} dicts built from verified sources.
-    """
     seen = {}
     for task in verified_results.get("verified_results", []):
         task_name = task.get("task", "Source")
@@ -81,7 +78,6 @@ def extract_sources(verified_results: Dict[str, Any]) -> List[Dict[str, str]]:
 
 
 def build_sources_markdown(sources: List[Dict[str, str]]) -> str:
-    """Generates a clean, ordered, clickable Sources section as markdown."""
     if not sources:
         return "\n## Sources\nNo verified sources available.\n"
     lines = ["\n## Sources"]
@@ -123,14 +119,26 @@ graph.add_edge("critic", END)
 workflow = graph.compile()
 
 
+def _log(section: str, data):
+    with open("debug_log.txt", "a", encoding="utf-8") as f:
+        f.write(f"\n\n=== {section} ===\n")
+        try:
+            f.write(_json.dumps(data, indent=2))
+        except Exception:
+            f.write(str(data))
+
+
 def run_pipeline(document_text: str, use_rag: bool = True):
     """
     Generator required by app.py. Runs each agent in sequence
     and yields (step_key, payload) after every step finishes, mapped
     to the exact shape the UI expects.
     """
+    MAX_QUERY_CHARS = 7000
+    trimmed_text = document_text[:MAX_QUERY_CHARS]
+
     state: ResearchState = {
-        "query": document_text,
+        "query": trimmed_text,
         "plan": {}, "research_results": {}, "verified_results": {},
         "analysis_results": {}, "sources": [], "report": "", "critic_review": {},
     }
@@ -138,13 +146,13 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     # ── Planner ──────────────────────────────────────────────
     state = planner_node(state)
     plan = state["plan"]
-    print("DEBUG RAW PLAN:", plan)  # 👈 DEBUG
+    _log("PLAN", plan)
     subtopics = plan.get("tasks") or []
     yield "planner", {"subtopics": subtopics}
 
     # ── Research ─────────────────────────────────────────────
     state = research_node(state)
-    print("DEBUG RAW RESEARCH RESULTS:", state["research_results"])  # 👈 DEBUG
+    _log("RESEARCH_RESULTS", state["research_results"])
     research_tasks = state["research_results"].get("research_results") or []
     raw_sources = []
     for task in research_tasks:
@@ -158,7 +166,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
 
     # ── Verification ─────────────────────────────────────────
     state = verification_node(state)
-    print("DEBUG RAW VERIFIED RESULTS:", state["verified_results"])  # 👈 DEBUG
+    _log("VERIFIED_RESULTS", state["verified_results"])
     verified_tasks = state["verified_results"].get("verified_results") or []
     verified_sources = []
     conflicts = []
@@ -193,7 +201,6 @@ def run_pipeline(document_text: str, use_rag: bool = True):
 
     # ── Analysis ─────────────────────────────────────────────
     state = analysis_node(state)
-    print("DEBUG RAW ANALYSIS RESULTS:", state["analysis_results"])  # 👈 DEBUG
     analysis_tasks = state["analysis_results"].get("analysis_results") or []
     insights, trends, risks, opportunities, recommendations_analysis = [], [], [], [], []
     for task in analysis_tasks:

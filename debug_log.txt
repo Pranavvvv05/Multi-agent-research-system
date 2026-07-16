@@ -1,0 +1,324 @@
+
+
+=== PLAN ===
+{
+  "goal": "Research the concept, technologies, applications, challenges, and future outlook of Agentic AI, as well as its societal, economic, and ethical implications.",
+  "tasks": [
+    "Define Agentic AI and distinguish it from traditional AI, autonomous systems, and multi-agent systems. Include historical context and evolution.",
+    "Identify and explain the core technologies enabling Agentic AI, such as large language models, reinforcement learning, planning algorithms, memory systems, tool use, and orchestration frameworks.",
+    "Describe the architecture of AI agents, including perception, reasoning, decision-making, memory, and action execution components.",
+    "Analyze current trends in Agentic AI development, including adoption rates, industry investments, and notable research breakthroughs.",
+    "Survey real-world use cases of Agentic AI across sectors such as healthcare, finance, software development, customer service, logistics, and creative industries.",
+    "Examine the interaction modalities between humans and Agentic AI, including conversational interfaces, agent collaboration, and multi-agent ecosystems.",
+    "Assess the benefits of Agentic AI, including efficiency gains, automation of complex tasks, scalability, and personalization.",
+    "Evaluate the risks and challenges associated with Agentic AI, including safety, alignment, control, bias, transparency, accountability, and dependency risks.",
+    "Investigate ethical considerations and governance frameworks for Agentic AI, including regulatory approaches, responsible AI standards, and societal impact.",
+    "Analyze the economic impact of Agentic AI, including labor market transformations, productivity changes, industry disruption, and new business models.",
+    "Compare Agentic AI with other AI paradigms (e.g., generative AI, narrow AI, robotics) in terms of capabilities, limitations, and applications.",
+    "Identify common misconceptions and myths about Agentic AI and provide evidence-based clarifications.",
+    "Explore the current state of agent skills, limitations, and areas where Agentic AI underperforms or struggles.",
+    "Investigate the future outlook of Agentic AI, including anticipated advancements, potential applications, and long-term societal implications.",
+    "Review educational and skill development pathways for professionals to adapt to the Agentic AI era, including upskilling and reskilling strategies.",
+    "Examine global technological leadership and innovation ecosystems in Agentic AI, including key players, research labs, and government initiatives.",
+    "Assess the role of Agentic AI in reshaping work, including job creation, displacement, and transformation of roles across industries.",
+    "Investigate the technical and organizational challenges in planning and implementing Agentic AI systems, including integration, scalability, and maintenance.",
+    "Explore the role of memory, context awareness, and long-term learning in Agentic AI systems.",
+    "Analyze the regulatory landscape and policy debates surrounding Agentic AI in major jurisdictions (e.g., EU, US, China).",
+    "Identify emerging tools, platforms, and frameworks for building and deploying Agentic AI systems.",
+    "Evaluate the role of Agentic AI in scientific research, including hypothesis generation, experimentation, and discovery acceleration.",
+    "Investigate the impact of Agentic AI on creativity, innovation, and knowledge work."
+  ],
+  "information_categories": [
+    "Definitions and Conceptual Foundations",
+    "Core Technologies and Architectures",
+    "Historical Evolution and Current Trends",
+    "Use Cases and Sector-Specific Applications",
+    "Human-Agent Interaction and Collaboration",
+    "Benefits and Opportunities",
+    "Risks, Challenges, and Limitations",
+    "Ethical, Legal, and Societal Implications",
+    "Economic Impact and Market Dynamics",
+    "Comparative Analysis with Other AI Paradigms",
+    "Misconceptions and Myths",
+    "Skills and Workforce Development",
+    "Future Outlook and Predictions",
+    "Regulatory and Governance Frameworks",
+    "Tools, Platforms, and Development Ecosystems",
+    "Implementation Challenges and Best Practices",
+    "Global Innovation and Leadership Landscape",
+    "Scientific Research and Discovery Applications",
+    "Creativity and Knowledge Work Transformation"
+  ]
+}
+
+=== RESEARCH_RESULTS ===
+{
+  "research_results": [
+    {
+      "task": "Define Agentic AI and distinguish it from traditional AI, autonomous systems, and multi-agent systems. Include historical context and evolution.",
+      "findings": [
+        "Agentic AI represents a significant advancement over traditional AI by incorporating advanced reasoning, iterative planning, and autonomous decision-making capabilities to solve complex, multi-step problems with minimal human intervention, unlike traditional AI which relies on predefined rules or narrow task-specific automation.",
+        "Agentic AI distinguishes itself from generative AI by focusing on autonomous action and decision-making rather than content creation, and it differs from multi-agent systems (MAS) by emphasizing orchestrated autonomy, persistent memory, and dynamic task decomposition rather than distributed intelligence alone.",
+        "Historically, Agentic AI builds upon foundational paradigms such as multi-agent systems and expert systems, which emphasized social action and distributed intelligence, but it represents a paradigmatic shift marked by multi-agent collaboration and persistent memory systems."
+      ],
+      "sources": [
+        "https://amnic.com/blogs/what-is-agentic-ai",
+        "https://arxiv.org/html/2505.10468v1"
+      ],
+      "statistics": [],
+      "conflicting_information": []
+    },
+    {
+      "task": "Identify and explain the core technologies enabling Agentic AI, such as large language models, reinforcement learning, planning algorithms, memory systems, tool use, and orchestration frameworks.",
+      "findings": [
+        "Agentic AI relies on a combination of machine learning (ML), natural language processing (NLP), large language models (LLMs), deep learning, and real-time data retrieval techniques like Retrieval Augmented Generation (RAG) to enable autonomous decision-making, complex data analysis, and adaptation to changing situations.",
+        "Key enabling technologies for Agentic AI include tool use, memory systems, and workflow orchestration, which together allow AI agents to plan, execute, and adapt complex tasks across various systems.",
+        "Agentic AI enhances LLMs by enabling them to automate complex procedures, such as detecting adverse events in clinical notes, demonstrating its capability to extend beyond content generation to actionable, goal-oriented tasks."
+      ],
+      "sources": [
+        "https://www.mastechdigital.com/blogs/agentic-ai-autonomous-intelligence",
+        "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+      ],
+      "statistics": [],
+      "conflicting_information": []
+    },
+    {
+      "task": "Describe the architecture of AI agents, including perception, reasoning, decision-making, memory, and action execution components.",
+      "findings": [
+        "The core components of an AI agent architecture include goal definition, perception/input, memory, reasoning/planning, tool execution/action, orchestration/coordination, and feedback/observability, which collectively enable agents to perceive, decide, and act toward goals.",
+        "AI agent architecture transforms a language model into an autonomous system by implementing a loop that decides actions based on tool outputs, memory of past interactions, and reasoning capabilities, ensuring the agent can persistently work toward objectives.",
+        "Security considerations, such as guardrails and the prevention of excessive agency, are critical components in AI agent architectures to mitigate risks associated with autonomous decision-making and tool use."
+      ],
+      "sources": [
+        "https://www.glean.com/blog/7-core-components-of-an-ai-agent-architecture-explained",
+        "https://www.puppygraph.com/blog/ai-agent-architecture"
+      ],
+      "statistics": [],
+      "conflicting_information": []
+    },
+    {
+      "task": "Analyze current trends in Agentic AI development, including adoption rates, industry investments, and notable research breakthroughs.",
+      "findings": [
+        "Agentic AI is emerging as a transformative force in 2026, enabling systems to understand complex goals, plan multi-step actions, execute autonomously, and self-correct, distinguishing it from earlier generative AI models focused solely on content creation.",
+        "Real-world use cases of Agentic AI span customer service, supply chain optimization, healthcare diagnostics, business process automation, and content generation, with significant productivity gains reported across industries.",
+        "Adoption rates are accelerating, with enterprises investing heavily in Agentic AI to automate workflows and improve efficiency, though barriers such as skill gaps, integration challenges, and governance concerns persist."
+      ],
+      "sources": [
+        "https://www.linkedin.com/pulse/ai-trends-2026-dawn-agentic-intelligence-allan-smeyatsky-hmynf",
+        "https://kersai.com/ai-breakthroughs-in-2026"
+      ],
+      "statistics": [],
+      "conflicting_information": []
+    }
+  ]
+}
+
+=== VERIFIED_RESULTS ===
+{
+  "verified_results": [
+    {
+      "task": "Define Agentic AI and distinguish it from traditional AI, autonomous systems, and multi-agent systems. Include historical context and evolution.",
+      "verified_sources": [
+        {
+          "source": "https://arxiv.org/html/2505.10468v1",
+          "source_quality": "high"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "Agentic AI represents a significant advancement over traditional AI by incorporating advanced reasoning, iterative planning, and autonomous decision-making capabilities to solve complex, multi-step problems with minimal human intervention, unlike traditional AI which relies on predefined rules or narrow task-specific automation.",
+          "verification_status": "verified",
+          "confidence_score": 0.93,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://arxiv.org/html/2505.10468v1"
+          ],
+          "notes": "Supported by academic research paper with clear definitions and comparisons."
+        },
+        {
+          "claim": "Agentic AI distinguishes itself from generative AI by focusing on autonomous action and decision-making rather than content creation, and it differs from multi-agent systems (MAS) by emphasizing orchestrated autonomy, persistent memory, and dynamic task decomposition rather than distributed intelligence alone.",
+          "verification_status": "partially_verified",
+          "confidence_score": 0.82,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://arxiv.org/html/2505.10468v1"
+          ],
+          "notes": "Supported by academic paper but requires additional sources for full verification of distinctions."
+        },
+        {
+          "claim": "Historically, Agentic AI builds upon foundational paradigms such as multi-agent systems and expert systems, which emphasized social action and distributed intelligence, but it represents a paradigmatic shift marked by multi-agent collaboration and persistent memory systems.",
+          "verification_status": "partially_verified",
+          "confidence_score": 0.8,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://arxiv.org/html/2505.10468v1"
+          ],
+          "notes": "Supported by academic paper but requires additional historical context sources."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.85
+    },
+    {
+      "task": "Identify and explain the core technologies enabling Agentic AI, such as large language models, reinforcement learning, planning algorithms, memory systems, tool use, and orchestration frameworks.",
+      "verified_sources": [
+        {
+          "source": "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained",
+          "source_quality": "high"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "Agentic AI relies on a combination of machine learning (ML), natural language processing (NLP), large language models (LLMs), deep learning, and real-time data retrieval techniques like Retrieval Augmented Generation (RAG) to enable autonomous decision-making, complex data analysis, and adaptation to changing situations.",
+          "verification_status": "verified",
+          "confidence_score": 0.95,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by reputable academic institution source with detailed explanation of enabling technologies."
+        },
+        {
+          "claim": "Key enabling technologies for Agentic AI include tool use, memory systems, and workflow orchestration, which together allow AI agents to plan, execute, and adapt complex tasks across various systems.",
+          "verification_status": "verified",
+          "confidence_score": 0.92,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "Supported by reputable academic institution source with clear description of core technologies."
+        },
+        {
+          "claim": "Agentic AI enhances LLMs by enabling them to automate complex procedures, such as detecting adverse events in clinical notes, demonstrating its capability to extend beyond content generation to actionable, goal-oriented tasks.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "high",
+          "evidence_available": false,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://mitsloan.mit.edu/ideas-made-to-matter/agentic-ai-explained"
+          ],
+          "notes": "No specific evidence provided in source to support this claim."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.92
+    },
+    {
+      "task": "Describe the architecture of AI agents, including perception, reasoning, decision-making, memory, and action execution components.",
+      "verified_sources": [
+        {
+          "source": "https://www.glean.com/blog/7-core-components-of-an-ai-agent-architecture-explained",
+          "source_quality": "high"
+        },
+        {
+          "source": "https://www.puppygraph.com/blog/ai-agent-architecture",
+          "source_quality": "medium"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "The core components of an AI agent architecture include goal definition, perception/input, memory, reasoning/planning, tool execution/action, orchestration/coordination, and feedback/observability, which collectively enable agents to perceive, decide, and act toward goals.",
+          "verification_status": "verified",
+          "confidence_score": 0.9,
+          "source_quality": "high",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://www.glean.com/blog/7-core-components-of-an-ai-agent-architecture-explained"
+          ],
+          "notes": "Supported by detailed technical blog with clear component breakdown."
+        },
+        {
+          "claim": "AI agent architecture transforms a language model into an autonomous system by implementing a loop that decides actions based on tool outputs, memory of past interactions, and reasoning capabilities, ensuring the agent can persistently work toward objectives.",
+          "verification_status": "verified",
+          "confidence_score": 0.88,
+          "source_quality": "medium",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://www.puppygraph.com/blog/ai-agent-architecture"
+          ],
+          "notes": "Supported by technical blog, though source quality is medium."
+        },
+        {
+          "claim": "Security considerations, such as guardrails and the prevention of excessive agency, are critical components in AI agent architectures to mitigate risks associated with autonomous decision-making and tool use.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "medium",
+          "evidence_available": false,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://www.puppygraph.com/blog/ai-agent-architecture"
+          ],
+          "notes": "No specific evidence provided in source to support this claim."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.89
+    },
+    {
+      "task": "Analyze current trends in Agentic AI development, including adoption rates, industry investments, and notable research breakthroughs.",
+      "verified_sources": [
+        {
+          "source": "https://www.linkedin.com/pulse/ai-trends-2026-dawn-agentic-intelligence-allan-smeyatsky-hmynf",
+          "source_quality": "low"
+        },
+        {
+          "source": "https://kersai.com/ai-breakthroughs-in-2026",
+          "source_quality": "medium"
+        }
+      ],
+      "verified_findings": [
+        {
+          "claim": "Agentic AI is emerging as a transformative force in 2026, enabling systems to understand complex goals, plan multi-step actions, execute autonomously, and self-correct, distinguishing it from earlier generative AI models focused solely on content creation.",
+          "verification_status": "partially_verified",
+          "confidence_score": 0.65,
+          "source_quality": "low",
+          "evidence_available": true,
+          "hallucination_risk": false,
+          "supporting_sources": [
+            "https://www.linkedin.com/pulse/ai-trends-2026-dawn-agentic-intelligence-allan-smeyatsky-hmynf"
+          ],
+          "notes": "Source is low quality (LinkedIn article) with claims that would require more authoritative sources."
+        },
+        {
+          "claim": "Real-world use cases of Agentic AI span customer service, supply chain optimization, healthcare diagnostics, business process automation, and content generation, with significant productivity gains reported across industries.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "low",
+          "evidence_available": false,
+          "hallucination_risk": true,
+          "supporting_sources": [
+            "https://www.linkedin.com/pulse/ai-trends-2026-dawn-agentic-intelligence-allan-smeyatsky-hmynf"
+          ],
+          "notes": "No verifiable evidence provided in source. High risk of hallucination."
+        },
+        {
+          "claim": "Adoption rates are accelerating, with enterprises investing heavily in Agentic AI to automate workflows and improve efficiency, though barriers such as skill gaps, integration challenges, and governance concerns persist.",
+          "verification_status": "unverified",
+          "confidence_score": 0.0,
+          "source_quality": "low",
+          "evidence_available": false,
+          "hallucination_risk": true,
+          "supporting_sources": [
+            "https://kersai.com/ai-breakthroughs-in-2026"
+          ],
+          "notes": "No verifiable evidence provided in source. High risk of hallucination."
+        }
+      ],
+      "conflicting_information": [],
+      "overall_task_confidence": 0.22
+    }
+  ]
+}
