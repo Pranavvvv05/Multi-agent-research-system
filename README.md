@@ -12,6 +12,8 @@ Transform unstructured documents into verified, explainable research reports —
 [![Mistral](https://img.shields.io/badge/LLM-Mistral%20Small-orange)]()
 [![License](https://img.shields.io/badge/License-Educational%2FPortfolio-lightgrey)]()
 
+🚀 [**Live Demo →**](https://multi-agent-research-system-goubqhdf2cntousrd8dv4q.streamlit.app)
+
 </div>
 
 ---
