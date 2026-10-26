@@ -7,7 +7,7 @@ from agents.critic_agent import CriticAgent
 load_dotenv()
 
 model = ChatMistralAI(
-    model="mistral-small-latest",
+    model="open-mistral-nemo",
     temperature=0
 )
 

@@ -19,7 +19,7 @@ def get_retriever(vector_store):
         )
 
     elif choice == "multiquery":
-        llm = ChatMistralAI(model="mistral-small-latest")
+        llm = ChatMistralAI(model="open-mistral-nemo")
         base_retriever = vector_store.as_retriever(search_kwargs={"k": 3})
         retriever = MultiQueryRetriever.from_llm(retriever=base_retriever, llm=llm)
 

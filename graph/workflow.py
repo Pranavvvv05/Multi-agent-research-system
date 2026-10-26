@@ -32,7 +32,7 @@ rate_limiter = InMemoryRateLimiter(
 )
 
 model = ChatMistralAI(
-    model="mistral-small-latest",
+    model="open-mistral-nemo",
     api_key=os.getenv("MISTRAL_API_KEY"),
     timeout=180,
     max_retries=5,
