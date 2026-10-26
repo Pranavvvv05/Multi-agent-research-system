@@ -1,27 +1,39 @@
 import json
 import re
+import time
 import httpx
 from agents.prompts import VERIFICATION_PROMPT
+
+MAX_FIELD_CHARS = 800
+MAX_ATTEMPTS = 5
+
+
+def _shrink(obj):
+    if isinstance(obj, str):
+        return obj[:MAX_FIELD_CHARS]
+    if isinstance(obj, list):
+        return [_shrink(x) for x in obj]
+    if isinstance(obj, dict):
+        return {k: _shrink(v) for k, v in obj.items()}
+    return obj
 
 
 class VerificationAgent:
     def __init__(self, model):
         self.model = model
-        self.chain = (VERIFICATION_PROMPT | model).with_retry(
-            retry_if_exception_type=(httpx.HTTPStatusError,),
-            stop_after_attempt=6,
-            wait_exponential_jitter=True,
-        )
+        self.chain = VERIFICATION_PROMPT | model
 
     def verify(self, research_results):
-        response = self.chain.invoke(
-            {
-                "research_results": json.dumps(
-                    research_results,
-                    indent=2
-                )
-            }
-        )
+        payload = {"research_results": json.dumps(_shrink(research_results))}
+        for attempt in range(MAX_ATTEMPTS):
+            try:
+                response = self.chain.invoke(payload)
+                break
+            except httpx.HTTPStatusError as e:
+                if e.response.status_code == 429 and attempt < MAX_ATTEMPTS - 1:
+                    time.sleep(20 * (attempt + 1))
+                    continue
+                raise
         return self._parse_response(response.content)
 
     def _parse_response(self, raw_content):
