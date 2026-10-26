@@ -4,6 +4,7 @@ from typing import TypedDict, List, Dict, Any
 
 from langgraph.graph import StateGraph, END
 from langchain_mistralai import ChatMistralAI
+from langchain_core.rate_limiters import InMemoryRateLimiter
 
 from agents.planner_agent import PlannerAgent
 from agents.research_agent import ResearchAgent
@@ -23,12 +24,20 @@ class ResearchState(TypedDict):
     report: str
     critic_review: Dict[str, Any]
 
+
+rate_limiter = InMemoryRateLimiter(
+    requests_per_second=0.5,
+    check_every_n_seconds=0.1,
+    max_bucket_size=1,
+)
+
 model = ChatMistralAI(
     model="mistral-small-latest",
     api_key=os.getenv("MISTRAL_API_KEY"),
     timeout=180,
-    max_retries=2,
+    max_retries=5,
     max_tokens=10000,
+    rate_limiter=rate_limiter,
 )
 
 planner = PlannerAgent(model)
@@ -129,11 +138,6 @@ def _log(section: str, data):
 
 
 def run_pipeline(document_text: str, use_rag: bool = True):
-    """
-    Generator required by app.py. Runs each agent in sequence
-    and yields (step_key, payload) after every step finishes, mapped
-    to the exact shape the UI expects.
-    """
     MAX_QUERY_CHARS = 7000
     trimmed_text = document_text[:MAX_QUERY_CHARS]
 
@@ -143,14 +147,12 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "analysis_results": {}, "sources": [], "report": "", "critic_review": {},
     }
 
-    # ── Planner ──────────────────────────────────────────────
     state = planner_node(state)
     plan = state["plan"]
     _log("PLAN", plan)
     subtopics = plan.get("tasks") or []
     yield "planner", {"subtopics": subtopics}
 
-    # ── Research ─────────────────────────────────────────────
     state = research_node(state)
     _log("RESEARCH_RESULTS", state["research_results"])
     research_tasks = state["research_results"].get("research_results") or []
@@ -164,7 +166,6 @@ def run_pipeline(document_text: str, use_rag: bool = True):
             })
     yield "research", {"sources": raw_sources}
 
-    # ── Verification ─────────────────────────────────────────
     state = verification_node(state)
     _log("VERIFIED_RESULTS", state["verified_results"])
     verified_tasks = state["verified_results"].get("verified_results") or []
@@ -199,7 +200,6 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "relevance_score": source_relevance,
     }
 
-    # ── Analysis ─────────────────────────────────────────────
     state = analysis_node(state)
     analysis_tasks = state["analysis_results"].get("analysis_results") or []
     insights, trends, risks, opportunities, recommendations_analysis = [], [], [], [], []
@@ -216,7 +216,6 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "recommendations": recommendations_analysis,
     }
 
-    # ── Writer ───────────────────────────────────────────────
     state = writer_node(state)
     report_text = state["report"] if isinstance(state["report"], str) else ""
 
@@ -230,7 +229,6 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "recommendations": recommendations_analysis,
     }
 
-    # ── Critic ───────────────────────────────────────────────
     state = critic_node(state)
     c = state["critic_review"]
     yield "critic", {
