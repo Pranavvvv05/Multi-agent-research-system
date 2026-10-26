@@ -294,9 +294,23 @@ def render_panel(title: str, body_html: str, accent: str = "signal"):
     )
 
 
-def render_subtopics(subtopics: list[str]):
+def _subtopic_text(s):
+    """Subtopics are normally plain strings, but smaller models sometimes
+    return dicts like {"title": ..., "description": ...}. Pull out
+    readable text either way."""
+    if isinstance(s, str):
+        return s
+    if isinstance(s, dict):
+        for k in ("title", "subtopic", "name", "description"):
+            if s.get(k):
+                return str(s[k])
+        return " - ".join(str(v) for v in s.values())
+    return str(s)
+
+
+def render_subtopics(subtopics: list):
     rows = "".join(
-        f'<div class="if-row"><span class="if-row-marker">→</span>{html.escape(s)}</div>'
+        f'<div class="if-row"><span class="if-row-marker">→</span>{html.escape(_subtopic_text(s))}</div>'
         for s in subtopics
     ) or '<div class="if-row">No subtopics generated.</div>'
     render_panel("Planner — Subtopics", rows, "signal")

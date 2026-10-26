@@ -4,6 +4,17 @@ import re
 from agents.prompts import PLANNER_PROMPT
 
 
+def _to_text(item):
+    if isinstance(item, str):
+        return item
+    if isinstance(item, dict):
+        for k in ("title", "subtopic", "name", "description"):
+            if item.get(k):
+                return str(item[k])
+        return " - ".join(str(v) for v in item.values())
+    return str(item)
+
+
 class PlannerAgent:
 
     def __init__(self, model):
@@ -37,7 +48,13 @@ class PlannerAgent:
                 response_text
             )
 
-            return json.loads(response_text)
+            plan = json.loads(response_text)
+
+            # Normalize: smaller models sometimes return subtopics as dicts
+            if isinstance(plan, dict) and isinstance(plan.get("subtopics"), list):
+                plan["subtopics"] = [_to_text(s) for s in plan["subtopics"]]
+
+            return plan
 
         except Exception as e:
             return {
