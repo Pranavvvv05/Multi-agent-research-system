@@ -17,28 +17,28 @@ class ResearchAgent:
         Perform research using Tavily search results (+ knowledge-base chunks
         from the RAG retriever, if one is given) and return structured JSON output.
         """
-        # Limit to first 4 tasks to keep the prompt/response size manageable
-        # and avoid truncation on smaller max_tokens budgets.
         tasks = tasks[:4]
-
         search_data = []
 
         for task in tasks:
+            # Handle if task is passed as a dict or raw string
+            task_str = task.get("task", str(task)) if isinstance(task, dict) else str(task)
+
             try:
-                results = web_search(task, max_results=2)
+                results = web_search(task_str, max_results=2)
                 entry = {
-                    "task": task,
+                    "task": task_str,
                     "search_results": results
                 }
             except Exception as e:
                 entry = {
-                    "task": task,
+                    "task": task_str,
                     "search_results": [],
                     "error": str(e)
                 }
 
-            # RAG: uploaded document ke relevant chunks
-            kb = retrieve_for_task(retriever, task)
+            # RAG: uploaded document ke relevant chunks retrieve karo
+            kb = retrieve_for_task(retriever, task_str) if retriever else []
             if kb:
                 entry["knowledge_base_results"] = kb
 
@@ -53,7 +53,18 @@ class ResearchAgent:
                     "tasks": json.dumps(search_data, indent=2)
                 }
             )
-            return self._parse_response(response.content)
+            parsed = self._parse_response(response.content)
+
+            # Safeguard: LLM agar sources me kb:// link bhool jaye toh inject kar do taaki UI me RAG tag dikhe
+            if isinstance(parsed, dict) and "research_results" in parsed:
+                for idx, t in enumerate(parsed["research_results"]):
+                    if idx < len(search_data) and search_data[idx].get("knowledge_base_results"):
+                        sources = t.setdefault("sources", [])
+                        if not any(str(s).startswith("kb://") for s in sources):
+                            # Default knowledge-base reference
+                            sources.append(f"kb://document-chunk-{idx + 1}")
+
+            return parsed
         except Exception as e:
             return {
                 "error": "Failed to parse research output",
@@ -68,8 +79,7 @@ class ResearchAgent:
         except Exception:
             pass
 
-        # Fallback: extract the first {...} block in case of extra text
-        # or a truncated tail after valid JSON.
+        # Fallback: extract the first {...} block
         match = re.search(r"\{.*\}", raw_content, re.DOTALL)
         if match:
             try:

@@ -1,6 +1,6 @@
 import os
 import json as _json
-from typing import TypedDict, List, Dict, Any
+from typing import TypedDict, List, Dict, Any, Optional
 
 from langgraph.graph import StateGraph, END
 from langchain_mistralai import ChatMistralAI
@@ -23,6 +23,7 @@ class ResearchState(TypedDict):
     sources: List[Dict[str, str]]
     report: str
     critic_review: Dict[str, Any]
+    retriever: Optional[Any]
 
 
 rate_limiter = InMemoryRateLimiter(
@@ -53,8 +54,9 @@ def planner_node(state: ResearchState) -> ResearchState:
     return state
 
 
-def research_node(state: ResearchState, retriever=None) -> ResearchState:
+def research_node(state: ResearchState) -> ResearchState:
     plan = state["plan"]
+    retriever = state.get("retriever")
     state["research_results"] = researcher.research(
         state["query"],
         plan.get("goal", ""),
@@ -144,6 +146,14 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     MAX_QUERY_CHARS = 7000
     trimmed_text = document_text[:MAX_QUERY_CHARS]
 
+    retriever = None
+    if use_rag:
+        try:
+            from rag.retrieval import build_retriever
+            retriever = build_retriever(document_text)  # Poora document text pass hoga[cite: 1, 2]
+        except Exception as e:
+            _log("RAG_DISABLED", str(e))  # Fallback to web-only search[cite: 1, 2]
+
     state: ResearchState = {
         "query": trimmed_text,
         "plan": {},
@@ -153,6 +163,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
         "sources": [],
         "report": "",
         "critic_review": {},
+        "retriever": retriever,
     }
 
     state = planner_node(state)
@@ -161,15 +172,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     subtopics = plan.get("tasks") or []
     yield "planner", {"subtopics": subtopics}
 
-    retriever = None
-    if use_rag:
-        try:
-            from rag.retrieval import build_retriever
-            retriever = build_retriever(document_text)  # poora document, trimmed nahi
-        except Exception as e:
-            _log("RAG_DISABLED", str(e))  # fail ho toh sirf web search chalega
-
-    state = research_node(state, retriever=retriever)
+    state = research_node(state)
     _log("RESEARCH_RESULTS", state["research_results"])
     research_tasks = state["research_results"].get("research_results") or []
     raw_sources = []
@@ -178,7 +181,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
             raw_sources.append({
                 "title": task.get("task", "Untitled"),
                 "url": url,
-                "source_type": "rag" if str(url).startswith("kb://") else "web",
+                "source_type": "rag" if str(url).startswith("kb://") else "web",  # UI tag RAG detection[cite: 2]
             })
     yield "research", {"sources": raw_sources}
 

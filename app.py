@@ -629,9 +629,9 @@ if analyze_clicked:
     if not document_text.strip() and url_input.strip():
         with st.spinner("Fetching content from URL..."):
             result = scrape_url(url_input.strip())
-        if result["success"] and result["content"]:
+        if result.get("success") and result.get("content"):
             document_text = result["content"]
-            document_name = result["title"] or url_input.strip()
+            document_name = result.get("title") or url_input.strip()
         elif result.get("blocked"):
             st.error(
                 "This website blocks automated access (common for large sites like "
