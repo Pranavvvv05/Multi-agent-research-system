@@ -1,43 +1,47 @@
-from langchain_classic.retrievers.multi_query import MultiQueryRetriever
-from langchain_mistralai import ChatMistralAI
-from vectorstore.store import get_vector_store
+import uuid
+from functools import lru_cache
+
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
-def get_retriever(vector_store):
-    choice = input("Enter retrieval method (similarity/mmr/multiquery): ").strip().lower()
+@lru_cache(maxsize=1)
+def _embeddings():
+    # lazy import: model tabhi load hoga jab RAG sach me use ho
+    from langchain_huggingface import HuggingFaceEmbeddings
+    return HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L12-v2")
 
-    if choice == "similarity":
-        retriever = vector_store.as_retriever(
-            search_type="similarity",
-            search_kwargs={"k": 3}
-        )
 
-    elif choice == "mmr":
-        retriever = vector_store.as_retriever(
-            search_type="mmr",
-            search_kwargs={"k": 3}
-        )
+def build_retriever(text: str, source_name: str = "uploaded-document", k: int = 3):
+    """Document ko chunk karke temporary in-memory Chroma me daalta hai."""
+    from langchain_community.vectorstores import Chroma
 
-    elif choice == "multiquery":
-        llm = ChatMistralAI(model="open-mistral-nemo")
-        base_retriever = vector_store.as_retriever(search_kwargs={"k": 3})
-        retriever = MultiQueryRetriever.from_llm(retriever=base_retriever, llm=llm)
-
-    else:
-        print("Invalid choice! Use similarity/mmr/multiquery.")
+    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=80)
+    chunks = splitter.split_documents(
+        [Document(page_content=text, metadata={"source": source_name})]
+    )
+    if not chunks:
         return None
+    store = Chroma.from_documents(
+        chunks,
+        embedding=_embeddings(),
+        collection_name=f"run_{uuid.uuid4().hex[:8]}",  # persist_directory nahi = in-memory
+    )
+    return store.as_retriever(search_type="mmr", search_kwargs={"k": k})
 
-    return retriever
 
-
-if __name__ == "__main__":
-    vector_store = get_vector_store()
-    retriever = get_retriever(vector_store)
-
-    if retriever:
-        query = input("Enter your question: ").strip()
-        results = retriever.invoke(query)
-
-        print("\n===== Results =====\n")
-        for doc in results:
-            print(doc.page_content)
+def retrieve_for_task(retriever, task: str, max_chars: int = 500) -> list[dict]:
+    if retriever is None:
+        return []
+    try:
+        docs = retriever.invoke(str(task))
+    except Exception:
+        return []
+    return [
+        {
+            "title": d.metadata.get("source", "knowledge base"),
+            "url": "kb://" + d.metadata.get("source", "document").replace(" ", "_"),
+            "snippet": d.page_content[:max_chars],
+        }
+        for d in docs
+    ]

@@ -3,6 +3,7 @@ import re
 
 from agents.prompts import RESEARCH_PROMPT
 from tools.web_search import web_search
+from rag.retrieval import retrieve_for_task
 
 
 class ResearchAgent:
@@ -11,10 +12,10 @@ class ResearchAgent:
         self.model = model
         self.chain = RESEARCH_PROMPT | model
 
-    def research(self, query, goal, tasks):
+    def research(self, query, goal, tasks, retriever=None):
         """
-        Perform research using Tavily search results
-        and return structured JSON output.
+        Perform research using Tavily search results (+ knowledge-base chunks
+        from the RAG retriever, if one is given) and return structured JSON output.
         """
         # Limit to first 4 tasks to keep the prompt/response size manageable
         # and avoid truncation on smaller max_tokens budgets.
@@ -25,16 +26,23 @@ class ResearchAgent:
         for task in tasks:
             try:
                 results = web_search(task, max_results=2)
-                search_data.append({
+                entry = {
                     "task": task,
                     "search_results": results
-                })
+                }
             except Exception as e:
-                search_data.append({
+                entry = {
                     "task": task,
                     "search_results": [],
                     "error": str(e)
-                })
+                }
+
+            # RAG: uploaded document ke relevant chunks
+            kb = retrieve_for_task(retriever, task)
+            if kb:
+                entry["knowledge_base_results"] = kb
+
+            search_data.append(entry)
 
         response = None
         try:

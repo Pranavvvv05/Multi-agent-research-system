@@ -53,10 +53,13 @@ def planner_node(state: ResearchState) -> ResearchState:
     return state
 
 
-def research_node(state: ResearchState) -> ResearchState:
+def research_node(state: ResearchState, retriever=None) -> ResearchState:
     plan = state["plan"]
     state["research_results"] = researcher.research(
-        state["query"], plan.get("goal", ""), plan.get("tasks", [])
+        state["query"],
+        plan.get("goal", ""),
+        plan.get("tasks", []),
+        retriever=retriever,
     )
     return state
 
@@ -143,8 +146,13 @@ def run_pipeline(document_text: str, use_rag: bool = True):
 
     state: ResearchState = {
         "query": trimmed_text,
-        "plan": {}, "research_results": {}, "verified_results": {},
-        "analysis_results": {}, "sources": [], "report": "", "critic_review": {},
+        "plan": {},
+        "research_results": {},
+        "verified_results": {},
+        "analysis_results": {},
+        "sources": [],
+        "report": "",
+        "critic_review": {},
     }
 
     state = planner_node(state)
@@ -153,7 +161,15 @@ def run_pipeline(document_text: str, use_rag: bool = True):
     subtopics = plan.get("tasks") or []
     yield "planner", {"subtopics": subtopics}
 
-    state = research_node(state)
+    retriever = None
+    if use_rag:
+        try:
+            from rag.retrieval import build_retriever
+            retriever = build_retriever(document_text)  # poora document, trimmed nahi
+        except Exception as e:
+            _log("RAG_DISABLED", str(e))  # fail ho toh sirf web search chalega
+
+    state = research_node(state, retriever=retriever)
     _log("RESEARCH_RESULTS", state["research_results"])
     research_tasks = state["research_results"].get("research_results") or []
     raw_sources = []
@@ -162,7 +178,7 @@ def run_pipeline(document_text: str, use_rag: bool = True):
             raw_sources.append({
                 "title": task.get("task", "Untitled"),
                 "url": url,
-                "source_type": "web",
+                "source_type": "rag" if str(url).startswith("kb://") else "web",
             })
     yield "research", {"sources": raw_sources}
 
